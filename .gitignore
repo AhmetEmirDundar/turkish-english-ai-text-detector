@@ -1,0 +1,16 @@
+.venv/
+.idea/
+.training_cache/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+
+# Large local datasets, source archives and trained weights
+/kaynaklar/
+/data/*.jsonl
+/models/**/*.safetensors
+/metin.txt
+/models/*/splits.jsonl
+/models/*/test_predictions.jsonl

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#211c40"><title>Metin Dedektörü · Analiz</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23604ae7'/%3E%3Cpath d='M7 20h6l3-9 5 19 4-16 2 6h6' fill='none' stroke='white' stroke-width='2.5'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/app.css"><script defer src="/app.js"></script>
+</head>
+<body>
+  <svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="icon-wave" viewBox="0 0 24 24"><path d="M1.5 12h4l2.8-7 4.1 15 3.2-13 2.2 5h4.7"/></symbol>
+    <symbol id="icon-doc" viewBox="0 0 24 24"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8zM14 3v5h5M8 12h8m-8 4h6"/></symbol>
+    <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+    <symbol id="icon-upload" viewBox="0 0 24 24"><path d="M12 16V4m-5 5 5-5 5 5M4 16v4h16v-4"/></symbol>
+    <symbol id="icon-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v.2"/></symbol>
+    <symbol id="icon-lock" viewBox="0 0 24 24"><rect x="5.5" y="10" width="13" height="10" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3m-4 4v2"/></symbol>
+    <symbol id="icon-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="icon-clear" viewBox="0 0 24 24"><path d="M3 6h18M9 6V3h6v3m-10 0 1 15h12l1-15M10 10v7m4-7v7"/></symbol>
+    <symbol id="icon-book" viewBox="0 0 24 24"><path d="M3 5c3-.8 6-.6 9 1.3C15 4.4 18 4.2 21 5v14c-3-.9-6-.5-9 1.3-3-1.8-6-2.2-9-1.3zm9 1.3v14"/></symbol>
+  </svg>
+  <header class="top"><div class="wrap top-inner">
+    <div class="brand"><span class="brandmark"><svg><use href="#icon-wave"/></svg></span>Metin Dedektörü</div>
+    <div class="header-tools"><span class="local"><i></i> Yerel oturum</span><button class="model-link" id="open-info"><svg><use href="#icon-book"/></svg> Model bilgisi</button></div>
+  </div></header>
+  <main class="wrap">
+    <section class="hero" aria-labelledby="hero-heading">
+      <canvas id="signal" aria-hidden="true"></canvas>
+      <div class="hero-copy"><h1 id="hero-heading">İnsan mı,<br><em>yapay zekâ mı?</em></h1>
+      <p>Türkçe veya İngilizce metnini analiz et ve modelin yazarlık tahminini gör.</p></div>
+      <span class="model-tag" id="hero-model" hidden></span>
+    </section>
+    <div class="workspace">
+      <section class="panel editor">
+        <div class="panel-head"><div class="heading"><span class="icon-box"><svg><use href="#icon-doc"/></svg></span><h2>Metin girişi</h2></div>
+          <div class="example-wrap"><button id="examples" class="subtle" aria-expanded="false" aria-controls="sample-menu">Örnek metin <svg class="tiny"><use href="#icon-chevron"/></svg></button>
+            <div id="sample-menu" class="menu" hidden><button data-example="tr" type="button">Türkçe örnek</button><button data-example="en" type="button">İngilizce örnek</button></div></div>
+        </div>
+        <form id="analysis">
+          <div class="writing-surface"><label class="sr-only" for="text">Analiz edilecek metin</label>
+            <textarea id="text" maxlength="100000" aria-describedby="minimum counter" placeholder="Metnini buraya yaz veya yapıştır…" spellcheck="false"></textarea>
+            <div class="editor-tools"><button type="button" id="upload" class="subtle" title="TXT, Markdown, PDF, Word, Excel veya PowerPoint yükle"><svg><use href="#icon-upload"/></svg> Dosya yükle</button><input id="file" type="file" accept=".txt,.md,.markdown,.pdf,.docx,.xlsx,.xls,.pptx" hidden>
+            <button type="button" id="clear" class="subtle" disabled><svg><use href="#icon-clear"/></svg> Temizle</button></div>
+          </div>
+          <p id="message" class="message" role="status" hidden></p>
+          <div class="action-row"><div class="word-info"><strong id="counter">0 sözcük</strong><span id="minimum">En az 50 sözcük</span></div>
+            <button type="submit" class="primary" id="submit" disabled><span>Metni analiz et</span><svg><use href="#icon-arrow"/></svg></button></div>
+        </form>
+      </section>
+      <section class="panel output" id="output" aria-labelledby="output-heading">
+        <div class="panel-head"><div class="heading"><span class="icon-box"><svg><use href="#icon-wave"/></svg></span><h2 id="output-heading">Analiz sonucu</h2></div></div>
+        <div class="meter" aria-hidden="true">
+          <svg class="dial" viewBox="0 0 240 132" id="dial"></svg>
+          <div class="reading"><span id="score">—</span><small>AI skoru / 100</small></div>
+        </div>
+        <div class="verdict" role="status" id="verdict"><i></i><span>Metin bekleniyor</span></div>
+        <div class="details"><div><span>Karar eşiği</span><strong id="threshold">—</strong></div><div><span>İncelenen metin</span><strong id="pieces">—</strong></div></div>
+        <div class="caveat"><svg><use href="#icon-info"/></svg><p>Skor bir model tahminidir. Tek başına yazarlık kanıtı olarak kullanılmamalıdır.</p></div>
+      </section>
+    </div>
+    <footer><span><svg><use href="#icon-lock"/></svg>Metin yalnızca bu bilgisayarda işlenir.</span><span>Türkçe <b>·</b> İngilizce</span></footer>
+  </main>
+  <dialog id="info"><div class="dialog-head"><h2>Model bilgisi</h2><button id="close-info" class="icon-button" aria-label="Kapat"><svg><use href="#icon-close"/></svg></button></div>
+    <p><strong id="info-model">Yerel dedektör</strong>, Türkçe ve İngilizce metinler için insan veya yapay zekâ tahmini üretir.</p>
+    <h3>Metin nasıl incelenir?</h3><p>En az 50 sözcük gerekir. Model metnin tamamını sırayla, en çok 50 sözcüklük parçalar halinde inceler. Son parça kısa olsa da hesaba katılır. Her parçanın sonuçtaki ağırlığı sözcük sayısıyla orantılıdır.</p>
+    <h3>Skor nasıl okunur?</h3><p>AI skoru karar eşiğine ulaştığında model “Yapay zekâ” etiketini seçer. Skor, yazarın AI kullanmış olma olasılığı olarak yorumlanmamalıdır.</p>
+    <h3>Nerede yanılabilir?</h3><p>Model İngilizce akademik yazıları AI olarak işaretleyebilir. Günlük dilde ise bazı insan yorumlarını yanlış işaretleyebilir ve bazı AI yorumlarını kaçırabilir. Başarı, metnin türüne ve seçilen model sürümüne göre değişir.</p>
+  </dialog>
+</body></html>

@@ -1,0 +1,49 @@
+{
+  "v1_on_new_human_test": {
+    "historical": {
+      "n": 1155,
+      "false_positives": 1146,
+      "false_positive_rate": 0.9922077922077922
+    },
+    "recent": {
+      "n": 344,
+      "false_positives": 338,
+      "false_positive_rate": 0.9825581395348837
+    },
+    "all": {
+      "n": 1499,
+      "false_positives": 1484,
+      "false_positive_rate": 0.989993328885924
+    }
+  },
+  "v2_on_new_human_test": {
+    "historical": {
+      "human_texts": 1155,
+      "false_positives": 4,
+      "false_positive_rate": 0.003463203463203463
+    },
+    "recent": {
+      "human_texts": 344,
+      "false_positives": 6,
+      "false_positive_rate": 0.01744186046511628
+    }
+  },
+  "user_example": {
+    "url": "https://stackoverflow.com/questions/80014979",
+    "authorship": "unknown",
+    "v1": {
+      "label": "AI",
+      "ai_score": 0.997992,
+      "threshold": 0.6025534358235655,
+      "word_count": 107,
+      "windows": 3
+    },
+    "v2": {
+      "label": "İnsan",
+      "ai_score": 4.4e-05,
+      "threshold": 0.6085817936649918,
+      "word_count": 107,
+      "windows": 3
+    }
+  }
+}
