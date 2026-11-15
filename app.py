@@ -22,7 +22,8 @@ WEB = Path(__file__).resolve().parent / "web"
 DEFAULT_WEB_MODEL = ROOT / "models" / "detector_v6"
 ASSETS = {"/": ("index.html", "text/html"), "/app.css": ("app.css", "text/css"),
           "/app.js": ("app.js", "text/javascript"),
-          "/page-language.js": ("page-language.js", "text/javascript")}
+          "/page-language.js": ("page-language.js", "text/javascript"),
+          "/sitemap.xml": ("sitemap.xml", "application/xml")}
 INFO_PAGES = {
     "/nasil-calisir": "nasil-calisir.html",
     "/sinirlamalar": "sinirlamalar.html",
@@ -30,6 +31,14 @@ INFO_PAGES = {
     "/iletisim": "iletisim.html",
 }
 ASSETS.update({route: (filename, "text/html") for route, filename in INFO_PAGES.items()})
+EN_INFO_PAGES = {
+    "/en/how-it-works": "nasil-calisir.html",
+    "/en/limitations": "sinirlamalar.html",
+    "/en/privacy": "gizlilik.html",
+    "/en/contact": "iletisim.html",
+}
+ASSETS.update({route: (filename, "text/html") for route, filename in EN_INFO_PAGES.items()})
+ASSETS["/en"] = ("index.html", "text/html")
 MAX_CHARS = 100_000
 HF_SPACE_ID = "AhmetEmirDundar/ai-text-detector"
 EXTRACT_ROUTES = {"/api/extract/" + ext[1:]: ext for ext in DOCUMENT_EXTENSIONS}
@@ -86,6 +95,11 @@ def home():
     return FileResponse(WEB / "index.html", media_type="text/html")
 
 
+@app.get("/en")
+def english_home():
+    return home()
+
+
 @app.get("/app.css")
 def stylesheet():
     return FileResponse(WEB / "app.css", media_type="text/css")
@@ -111,11 +125,19 @@ def robots_txt():
     return FileResponse(WEB / "robots.txt", media_type="text/plain")
 
 
+@app.get("/sitemap.xml")
+def sitemap_xml():
+    return FileResponse(WEB / "sitemap.xml", media_type="application/xml")
+
+
 def serve_info_page(filename):
     return FileResponse(WEB / filename, media_type="text/html")
 
 
 for route, filename in INFO_PAGES.items():
+    app.add_api_route(route, lambda filename=filename: serve_info_page(filename),
+                      methods=["GET"], include_in_schema=False)
+for route, filename in EN_INFO_PAGES.items():
     app.add_api_route(route, lambda filename=filename: serve_info_page(filename),
                       methods=["GET"], include_in_schema=False)
 
@@ -129,6 +151,16 @@ def model_info():
             "min_words": WINDOW_WORDS, "max_chars": MAX_CHARS,
             "max_document_bytes": HOSTED_MAX_DOCUMENT_BYTES,
             "document_extensions": sorted(DOCUMENT_EXTENSIONS)}
+
+
+@app.get("/api/locale")
+def locale_info(request: Request):
+    country = request.headers.get("x-vercel-ip-country", "").upper()
+    if country:
+        language = "tr" if country == "TR" else "en"
+    else:
+        language = "tr" if request.headers.get("accept-language", "").lower().startswith("tr") else "en"
+    return {"language": language}
 
 
 @app.post("/api/analyze")
@@ -244,6 +276,10 @@ class Handler(BaseHTTPRequestHandler):
         if not self.local_request():
             return self.json(403, {"error": "Yalnızca yerel bağlantı desteklenir."})
         path = urlsplit(self.path).path
+        if path == "/api/locale":
+            country = self.headers.get("X-Vercel-IP-Country", "").upper()
+            language = "tr" if country == "TR" else "en" if country else "tr" if self.headers.get("Accept-Language", "").lower().startswith("tr") else "en"
+            return self.json(200, {"language": language})
         if path == "/api/model":
             try:
                 settings = json.loads((self.server.model_dir / "detector.json").read_bytes())
