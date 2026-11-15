@@ -84,6 +84,16 @@ def script():
     return FileResponse(WEB / "app.js", media_type="text/javascript")
 
 
+@app.get("/ads.txt")
+def ads_txt():
+    return FileResponse(WEB / "ads.txt", media_type="text/plain")
+
+
+@app.get("/robots.txt")
+def robots_txt():
+    return FileResponse(WEB / "robots.txt", media_type="text/plain")
+
+
 def serve_info_page(filename):
     return FileResponse(WEB / filename, media_type="text/html")
 
