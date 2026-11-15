@@ -20,7 +20,8 @@ from gradio_client import Client
 WEB = Path(__file__).resolve().parent / "web"
 DEFAULT_WEB_MODEL = ROOT / "models" / "detector_v6"
 ASSETS = {"/": ("index.html", "text/html"), "/app.css": ("app.css", "text/css"),
-          "/app.js": ("app.js", "text/javascript")}
+          "/app.js": ("app.js", "text/javascript"),
+          "/page-language.js": ("page-language.js", "text/javascript")}
 INFO_PAGES = {
     "/nasil-calisir": "nasil-calisir.html",
     "/sinirlamalar": "sinirlamalar.html",
@@ -82,6 +83,11 @@ def stylesheet():
 @app.get("/app.js")
 def script():
     return FileResponse(WEB / "app.js", media_type="text/javascript")
+
+
+@app.get("/page-language.js")
+def page_language_script():
+    return FileResponse(WEB / "page-language.js", media_type="text/javascript")
 
 
 @app.get("/ads.txt")

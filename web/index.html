@@ -24,7 +24,7 @@
   <header class="top"><div class="wrap top-inner">
     <div class="brand"><span class="brandmark"><svg><use href="#icon-wave"/></svg></span>Metin Dedektörü</div>
     <nav class="site-nav" aria-label="Site menüsü"><a href="/nasil-calisir">Nasıl çalışır?</a><a href="/sinirlamalar">Sınırlamalar</a><a href="/gizlilik">Gizlilik</a><a href="/iletisim">İletişim</a></nav>
-    <div class="header-tools"><span class="local"><i></i> Çevrimiçi</span><button class="model-link" id="open-info"><svg><use href="#icon-book"/></svg> Model bilgisi</button></div>
+    <div class="header-tools"><span class="local"><i></i> <span id="online-label">Çevrimiçi</span></span><button class="language-toggle" id="language-toggle" type="button" aria-label="Switch to English">EN</button><button class="model-link" id="open-info"><svg><use href="#icon-book"/></svg><span id="model-link-label">Model bilgisi</span></button></div>
   </div></header>
   <main class="wrap">
     <section class="hero" aria-labelledby="hero-heading">
@@ -36,29 +36,29 @@
     <div class="workspace">
       <section class="panel editor">
         <div class="panel-head"><div class="heading"><span class="icon-box"><svg><use href="#icon-doc"/></svg></span><h2>Metin girişi</h2></div>
-          <div class="example-wrap"><button id="examples" class="subtle" aria-expanded="false" aria-controls="sample-menu">Örnek metin <svg class="tiny"><use href="#icon-chevron"/></svg></button>
+          <div class="example-wrap"><button id="examples" class="subtle" aria-expanded="false" aria-controls="sample-menu"><span id="examples-label">Örnek metin</span> <svg class="tiny"><use href="#icon-chevron"/></svg></button>
             <div id="sample-menu" class="menu" hidden><button data-example="tr" type="button">Türkçe örnek</button><button data-example="en" type="button">İngilizce örnek</button></div></div>
         </div>
         <form id="analysis">
-          <div class="writing-surface"><label class="sr-only" for="text">Analiz edilecek metin</label>
-            <textarea id="text" maxlength="100000" aria-describedby="minimum counter" placeholder="Metnini buraya yaz veya yapıştır…" spellcheck="false"></textarea>
-            <div class="editor-tools"><button type="button" id="upload" class="subtle" title="TXT, Markdown, PDF, Word, Excel veya PowerPoint yükle"><svg><use href="#icon-upload"/></svg> Dosya yükle</button><input id="file" type="file" accept=".txt,.md,.markdown,.pdf,.docx,.xlsx,.xls,.pptx" hidden>
-            <button type="button" id="clear" class="subtle" disabled><svg><use href="#icon-clear"/></svg> Temizle</button></div>
+            <div class="writing-surface"><label class="sr-only" for="text" id="text-label">Analiz edilecek metin</label>
+            <textarea id="text" maxlength="100000" aria-describedby="minimum counter char-counter" placeholder="Metnini buraya yaz veya yapıştır…" spellcheck="false"></textarea>
+            <div class="editor-tools"><button type="button" id="upload" class="subtle" title="TXT, Markdown, PDF, Word, Excel veya PowerPoint yükle"><svg><use href="#icon-upload"/></svg><span id="upload-label">Dosya yükle</span></button><input id="file" type="file" accept=".txt,.md,.markdown,.pdf,.docx,.xlsx,.xls,.pptx" hidden>
+            <span id="drop-hint" class="drop-hint">veya dosyayı buraya bırak</span><button type="button" id="clear" class="subtle" disabled><svg><use href="#icon-clear"/></svg><span id="clear-label">Temizle</span></button></div>
           </div>
           <p id="message" class="message" role="status" hidden></p>
-          <div class="action-row"><div class="word-info"><strong id="counter">0 sözcük</strong><span id="minimum">En az 50 sözcük</span></div>
-            <button type="submit" class="primary" id="submit" disabled><span>Metni analiz et</span><svg><use href="#icon-arrow"/></svg></button></div>
+          <div class="action-row"><div class="word-info"><strong id="counter">0 sözcük</strong><span id="minimum">En az 50 sözcük</span><span id="char-counter">0 / 100.000 karakter</span></div>
+            <button type="submit" class="primary" id="submit" disabled><span id="submit-label">Metni analiz et</span><svg><use href="#icon-arrow"/></svg></button></div>
         </form>
       </section>
       <section class="panel output" id="output" aria-labelledby="output-heading">
-        <div class="panel-head"><div class="heading"><span class="icon-box"><svg><use href="#icon-wave"/></svg></span><h2 id="output-heading">Analiz sonucu</h2></div></div>
+        <div class="panel-head"><div class="heading"><span class="icon-box"><svg><use href="#icon-wave"/></svg></span><h2 id="output-heading">Analiz sonucu</h2></div><button id="copy-result" class="subtle copy-result" type="button" disabled aria-label="Sonucu kopyala">Sonucu kopyala</button></div>
         <div class="meter" aria-hidden="true">
           <svg class="dial" viewBox="0 0 240 132" id="dial"></svg>
           <div class="reading"><span id="score">—</span><small>AI skoru / 100</small></div>
         </div>
         <div class="verdict" role="status" id="verdict"><i></i><span>Metin bekleniyor</span></div>
         <div class="details"><div><span>Karar eşiği</span><strong id="threshold">—</strong></div><div><span>İncelenen metin</span><strong id="pieces">—</strong></div></div>
-        <div class="caveat"><svg><use href="#icon-info"/></svg><p>Skor bir model tahminidir. Tek başına yazarlık kanıtı olarak kullanılmamalıdır.</p></div>
+        <div class="caveat" id="caveat"><svg><use href="#icon-info"/></svg><p>Skor bir model tahminidir. Tek başına yazarlık kanıtı olarak kullanılmamalıdır.</p></div>
       </section>
     </div>
     <footer><span><svg><use href="#icon-lock"/></svg>Metin analiz için Hugging Face'e gönderilir.</span><nav class="footer-nav" aria-label="Bilgi sayfaları"><a href="/nasil-calisir">Nasıl çalışır?</a><a href="/sinirlamalar">Sınırlamalar</a><a href="/gizlilik">Gizlilik</a><a href="/iletisim">İletişim</a></nav><span>Türkçe <b>·</b> İngilizce</span></footer>

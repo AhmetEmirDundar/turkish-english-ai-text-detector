@@ -1,12 +1,40 @@
 "use strict";
 const el = id => document.getElementById(id);
 const input = el("text"), form = el("analysis"), button = el("submit");
-let settings = null, busy = false, loadedFile = 0;
+const words = {
+  tr: {online:"Çevrimiçi", model:"Model bilgisi", how:"Nasıl çalışır?", limits:"Sınırlamalar", privacy:"Gizlilik", contact:"İletişim", hero:"İnsan mı,<br><em>yapay zekâ mı?</em>", intro:"Türkçe veya İngilizce metnini analiz et ve modelin yazarlık tahminini gör.", editor:"Metin girişi", example:"Örnek metin", trExample:"Türkçe örnek", enExample:"İngilizce örnek", placeholder:"Metnini buraya yaz veya yapıştır…", upload:"Dosya yükle", clear:"Temizle", submit:"Metni analiz et", analyzing:"Analiz ediliyor…", result:"Analiz sonucu", score:"AI skoru / 100", waiting:"Metin bekleniyor", threshold:"Karar eşiği", inspected:"İncelenen metin", caveat:"Skor bir model tahminidir. Tek başına yazarlık kanıtı olarak kullanılmamalıdır.", privacyFoot:"Metin analiz için Hugging Face'e gönderilir.", lang:"EN", langLabel:"Switch to English", min:"En az {n} sözcük", count:"{n} sözcük", chars:"{n} / {max} karakter", fileTitle:"TXT, Markdown, PDF, Word, Excel veya PowerPoint yükle", drop:"veya dosyayı buraya bırak", copy:"Sonucu kopyala", copied:"Kopyalandı", modelIntro:", Türkçe ve İngilizce metinler için insan veya yapay zekâ tahmini üretir.", howText:"Metin nasıl incelenir?", howBody:"En az {n} sözcük gerekir. Model metnin tamamını sırayla, en çok 50 sözcüklük parçalar halinde inceler. Son parça kısa olsa da hesaba katılır. Her parçanın sonuçtaki ağırlığı sözcük sayısıyla orantılıdır.", scoreTitle:"Skor nasıl okunur?", scoreBody:"AI skoru karar eşiğine ulaştığında model “Yapay zekâ” etiketini seçer. Skor, yazarın AI kullanmış olma olasılığı olarak yorumlanmamalıdır.", styleTitle:"Üslup skoru nasıl destekler?", styleBody:"Üslup modeli cümle yapısını, sözcük çeşitliliğini ve tekrarı inceler.", errorsTitle:"Nerede yanılabilir?", errorsBody:"Model İngilizce akademik yazıları AI olarak işaretleyebilir. Günlük dilde ise bazı insan yorumlarını yanlış işaretleyebilir ve bazı AI yorumlarını kaçırabilir. Başarı, metnin türüne ve seçilen model sürümüne göre değişir.", human:"İnsan", ai:"Yapay zekâ", busy:"Model metni inceliyor…", failed:"Analiz tamamlanamadı", unavailable:"Sunucuya ulaşılamadı. Biraz sonra tekrar dene.", readFile:"Dosya okunuyor…", unsupported:"Bu dosya biçimi şu anda desteklenmiyor. TXT veya Markdown dosyası deneyebilirsin.", invalidFile:"TXT, Markdown, PDF, Word (.docx), Excel (.xlsx, .xls) veya PowerPoint (.pptx) dosyası seç.", tooLarge:"En fazla 100.000 karakter yüklenebilir.", tooBig:"Belge dosyaları en fazla {n} MB olabilir.", badEncoding:"Dosyayı UTF-8 olarak kaydedip yeniden dene.", cannotRead:"Belge okunamadı.", modelError:"Model ayarları okunamadı. Sayfayı yenileyip tekrar dene.", modelUnavailable:"Bu sürümde genel skoru ana model belirler.", stylePart:"Üslup modeli cümle yapısını, sözcük çeşitliliğini ve tekrarı inceler. Üslup skorunun genel skordaki ağırlığı %{n}. Yeterli sözcük bulunmadığında ana skor kullanılır.", pieces:"{n} parça · {w} sözcük", close:"Kapat", analyzingError:"Analiz tamamlanamadı."},
+  en: {online:"Online", model:"About the model", how:"How it works", limits:"Limitations", privacy:"Privacy", contact:"Contact", hero:"Human,<br><em>or AI?</em>", intro:"Analyze text in Turkish or English and see the model’s authorship estimate.", editor:"Your text", example:"Sample text", trExample:"Turkish sample", enExample:"English sample", placeholder:"Type or paste your text here…", upload:"Upload file", clear:"Clear", submit:"Analyze text", analyzing:"Analyzing…", result:"Analysis result", score:"AI score / 100", waiting:"Waiting for text", threshold:"Decision threshold", inspected:"Text analyzed", caveat:"This score is a model estimate. It should not be used as proof of authorship on its own.", privacyFoot:"Text is sent to Hugging Face for analysis.", lang:"TR", langLabel:"Türkçeye geç", min:"At least {n} words", count:"{n} words", chars:"{n} / {max} characters", fileTitle:"Upload TXT, Markdown, PDF, Word, Excel, or PowerPoint", drop:"or drop a file here", copy:"Copy result", copied:"Copied", modelIntro:" estimates whether Turkish and English text was written by a person or AI.", howText:"How is the text analyzed?", howBody:"At least {n} words are required. The model processes the full text in order, in chunks of up to 50 words. A short final chunk is included. Each chunk is weighted by its word count.", scoreTitle:"What does the score mean?", scoreBody:"When the AI score reaches the decision threshold, the model labels the text “AI”. The score should not be read as the probability that the author used AI.", styleTitle:"How does style contribute?", styleBody:"The style model examines sentence structure, vocabulary variety, and repetition.", errorsTitle:"Where can it be wrong?", errorsBody:"The model may flag English academic writing as AI. It may also misclassify some informal human writing or miss some AI-written comments. Accuracy varies by text type and model version.", human:"Human", ai:"AI", busy:"The model is analyzing your text…", failed:"Analysis failed", unavailable:"Could not reach the server. Please try again shortly.", readFile:"Reading file…", unsupported:"This file type is not supported right now. Try a TXT or Markdown file.", invalidFile:"Choose a TXT, Markdown, PDF, Word (.docx), Excel (.xlsx, .xls), or PowerPoint (.pptx) file.", tooLarge:"Files can contain up to 100,000 characters.", tooBig:"Documents can be up to {n} MB.", badEncoding:"Save the file as UTF-8 and try again.", cannotRead:"Could not read the document.", modelError:"Could not load model settings. Refresh the page and try again.", modelUnavailable:"This version uses the main model for the overall score.", stylePart:"The style model examines sentence structure, vocabulary variety, and repetition. It contributes %{n} to the overall score. The main model is used when there are not enough words.", pieces:"{n} chunks · {w} words", close:"Close", analyzingError:"Analysis failed."}
+};
+let lang = localStorage.getItem("detector-language") === "en" ? "en" : "tr";
+const t = (key, values = {}) => Object.entries(values).reduce((s,[k,v])=>s.replaceAll("{"+k+"}",String(v)), words[lang][key] || words.tr[key] || key);
+function language() {
+  document.documentElement.lang = lang;
+  document.title = lang === "en" ? "AI Text Detector · Analysis" : "Metin Dedektörü · Analiz";
+  const set=(id,value)=>{const node=el(id);if(node)node.textContent=value;};
+  set("online-label",t("online"));set("model-link-label",t("model"));set("examples-label",t("example"));set("upload-label",t("upload"));set("clear-label",t("clear"));set("submit-label",busy?t("analyzing"):t("submit"));set("output-heading",t("result"));set("hero-heading","");el("hero-heading").innerHTML=t("hero");
+  el("hero-heading").nextElementSibling.textContent=t("intro");el("text").placeholder=t("placeholder");el("text-label").textContent=lang==="en"?"Text to analyze":"Analiz edilecek metin";
+  el("sample-menu").querySelector('[data-example="tr"]').textContent=t("trExample");el("sample-menu").querySelector('[data-example="en"]').textContent=t("enExample");
+  el("file").previousElementSibling.title=t("fileTitle");set("drop-hint",t("drop"));set("copy-result",t("copy"));el("copy-result").setAttribute("aria-label",t("copy"));
+  const headings=document.querySelectorAll(".site-nav a,.footer-nav a");for(const a of headings){const key={"/nasil-calisir":"how","/sinirlamalar":"limits","/gizlilik":"privacy","/iletisim":"contact"}[a.getAttribute("href")];if(key)a.textContent=t(key);}
+  el("language-toggle").textContent=t("lang");el("language-toggle").setAttribute("aria-label",t("langLabel"));
+  el("score").nextElementSibling.textContent=t("score");el("verdict").querySelector("span").textContent=el("score").textContent==="—"?t("waiting"):el("verdict").dataset.state==="ai"?t("ai"):t("human");
+  const detailLabels=el("threshold").parentElement.parentElement.querySelectorAll("span");detailLabels[0].textContent=t("threshold");detailLabels[1].textContent=t("inspected");el("caveat").querySelector("p").textContent=t("caveat");document.querySelector("footer > span").lastChild.textContent=t("privacyFoot");
+  for(const [i,a] of [...document.querySelectorAll(".site-nav a")].entries()) {a.setAttribute("aria-label",a.textContent);}
+  for(const [selector,value] of [[".heading h2",t("editor")]]) document.querySelector(selector).textContent=value;
+  const info=el("info");info.querySelector(".dialog-head h2").textContent=t("model");el("close-info").setAttribute("aria-label",t("close"));
+  const paras=info.querySelectorAll("p"), hs=info.querySelectorAll("h3");
+  hs[0].textContent=t("howText");hs[1].textContent=t("scoreTitle");hs[2].textContent=t("styleTitle");hs[3].textContent=t("errorsTitle");
+  paras[0].textContent=(el("info-model").textContent|| (lang==="en"?"Local detector":"Yerel dedektör"))+t("modelIntro");paras[1].textContent=t("howBody",{n:settings?.min_words||50});paras[2].textContent=t("scoreBody");
+  if(typeof settings?.style_weight==="number")paras[3].textContent=settings.style_weight?t("stylePart",{n:number(settings.style_weight*100)}):t("modelUnavailable");else paras[3].textContent=t("styleBody");paras[4].textContent=t("errorsBody");
+  sync();
+}
+el("language-toggle").onclick=()=>{lang=lang==="tr"?"en":"tr";localStorage.setItem("detector-language",lang);language();};
+let settings = null, busy = false, loadedFile = 0, lastResult = null;
 const samples = {
   tr: "Geçen hafta işe giderken her sabah önünden geçtiğim parkta kısa bir yürüyüş yapmaya karar verdim. Normalde otobüse yetişmek için hızlı adımlarla yürürdüm. Bu kez biraz erken çıktığım için banklardan birine oturdum ve çevremde olup bitenleri izledim. Birkaç dakika sonra aynı yolu kullanan insanların çoğunun da benim gibi acele ettiğini fark ettim. Ertesi sabah yanımda bir kitap götürdüm ve otobüs gelene kadar birkaç sayfa okudum.",
   en: "I took a different route to the station yesterday because the main road was closed. There was a small bakery on the corner that I had never noticed before. I stopped for a loaf of bread and ended up talking to the owner about the neighborhood. By the time I reached the platform, I had missed my usual train, but I had also found somewhere I would like to visit again."
 };
-const number = value => new Intl.NumberFormat("tr-TR", {maximumFractionDigits: 1}).format(value);
+const number = value => new Intl.NumberFormat(lang==="en"?"en-US":"tr-TR", {maximumFractionDigits: 1}).format(value);
 function message(text = "") {
   el("message").textContent = text;
   el("message").hidden = !text;
@@ -42,17 +70,19 @@ function drawDial(score = null) {
 }
 function sync() {
   const words = input.value.trim() ? input.value.trim().split(/\s+/u).length : 0;
-  el("counter").textContent = number(words) + " sözcük";
+  el("counter").textContent = t("count",{n:number(words)});
+  el("char-counter").textContent=t("chars",{n:number(input.value.length),max:number(settings?.max_chars??100000)});
+  el("char-counter").classList.toggle("over-limit",input.value.length>(settings?.max_chars??100000)*.95);
   button.disabled = busy || !settings || words < settings.min_words;
   el("clear").disabled = busy || !input.value;
   el("upload").disabled = busy;
   el("examples").disabled = busy;
   input.readOnly = busy;
-  button.querySelector("span").textContent = busy ? "Analiz ediliyor…" : "Metni analiz et";
+  el("submit-label").textContent = busy ? t("analyzing") : t("submit");
 }
 function resetResult() {
   el("score").textContent = "—"; el("pieces").textContent = "—";
-  verdict("Metin bekleniyor"); drawDial(); message(); sync();
+  verdict(t("waiting")); drawDial(); message(); sync(); el("copy-result").disabled=true;lastResult=null;
 }
 function closeMenu() {el("sample-menu").hidden=true;el("examples").setAttribute("aria-expanded","false");}
 el("examples").onclick = () => {
@@ -75,37 +105,37 @@ el("upload").onclick = () => el("file").click();
 async function readUpload(file, limit) {
   const extension = file.name.split(".").pop().toLowerCase();
   if (!file.name.includes(".") || !el("file").accept.split(",").includes("." + extension)) {
-    throw new Error("TXT, Markdown, PDF, Word (.docx), Excel (.xlsx, .xls) veya PowerPoint (.pptx) dosyası seç.");
+    throw new Error(t("invalidFile"));
   }
   if (!["txt", "md", "markdown"].includes(extension)) {
-    const restartMessage = "Bu dosya biçimi şu anda desteklenmiyor. TXT veya Markdown dosyası deneyebilirsin.";
+    const restartMessage = t("unsupported");
     if (settings && !settings.document_extensions?.includes("." + extension)) throw new Error(restartMessage);
     const maxBytes = settings?.max_document_bytes ?? 20 * 1024 * 1024;
-    if (file.size > maxBytes) throw new Error(`Belge dosyaları en fazla ${Math.floor(maxBytes / 1024 / 1024)} MB olabilir.`);
+    if (file.size > maxBytes) throw new Error(t("tooBig",{n:Math.floor(maxBytes / 1024 / 1024)}));
     const response = await fetch("/api/extract/" + extension, {method: "POST", body: file});
     if (response.status === 404) throw new Error(restartMessage);
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error || data.detail || "Belge okunamadı.");
+    if (!response.ok) throw new Error(data.error || data.detail || t("cannotRead"));
     return data.text;
   }
-  if (file.size > limit * 4 + 3) throw new Error("En fazla 100.000 karakter yüklenebilir.");
+  if (file.size > limit * 4 + 3) throw new Error(t("tooLarge"));
   const bytes = await file.arrayBuffer();
   try {
     return new TextDecoder("utf-8", {fatal: true}).decode(bytes);
   } catch {
-    throw new Error("Dosyayı UTF-8 olarak kaydedip yeniden dene.");
+    throw new Error(t("badEncoding"));
   }
 }
 el("file").onchange = async () => {
   const file=el("file").files[0]; el("file").value="";
   if(!file || busy) return;
   const seq=++loadedFile;
-  message("Dosya okunuyor…");
+  message(t("readFile"));
   button.disabled=true;
   try {
     const limit=settings?.max_chars ?? input.maxLength;
     const text=await readUpload(file, limit);
-    if(text.length>limit) throw new Error("En fazla 100.000 karakter yüklenebilir.");
+    if(text.length>limit) throw new Error(t("tooLarge"));
     if(seq!==loadedFile || busy) return;
     input.value=text; resetResult(); input.focus();
   } catch(err) {
@@ -126,15 +156,16 @@ form.onsubmit = async e => {
     const response=await fetch("/api/analyze",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:input.value})});
     const data=await response.json();
     if(!response.ok) throw new Error(data.error || data.detail || "Analiz tamamlanamadı.");
+    lastResult=data;el("copy-result").disabled=false;
     el("score").textContent=number(data.ai_score*100);
-    el("pieces").textContent=number(data.windows)+" parça · "+number(data.word_count)+" sözcük";
+    el("pieces").textContent=t("pieces",{n:number(data.windows),w:number(data.word_count)});
     el("threshold").textContent=number(data.threshold*100)+" / 100";
-    verdict(data.label==="AI" ? "Yapay zekâ" : "İnsan", data.label==="AI" ? "ai" : "human");
+    verdict(data.label==="AI" ? t("ai") : t("human"), data.label==="AI" ? "ai" : "human");
     drawDial(data.ai_score);
     if(matchMedia("(max-width:800px)").matches) el("output").scrollIntoView({block:"nearest"});
   } catch(err) {
-    el("score").textContent="—"; verdict("Analiz tamamlanamadı");
-    message(err instanceof TypeError ? "Sunucuya ulaşılamadı. Biraz sonra tekrar dene." : err.message);
+    el("score").textContent="—"; verdict(t("failed"));
+    message(err instanceof TypeError ? t("unavailable") : err.message);
   } finally {busy=false;el("output").removeAttribute("aria-busy");sync();}
 };
 const dialog=el("info");
@@ -182,14 +213,24 @@ drawDial();sync();
     const name=settings.name;
     el("output-heading").textContent="Analiz sonucu";
     if (typeof settings.style_weight === "number") {
-      el("info-style").textContent=settings.style_weight > 0
-        ? "Üslup modeli cümle yapısını, sözcük çeşitliliğini ve tekrarı inceler. Üslup skorunun genel skordaki ağırlığı %"
-          +number(settings.style_weight*100)+". Yeterli sözcük bulunmadığında ana skor kullanılır."
-        : "Bu sürümde genel skoru ana model belirler.";
+    el("info-style").textContent=settings.style_weight > 0
+        ? t("stylePart",{n:number(settings.style_weight*100)}) : t("modelUnavailable");
     }
     el("hero-model").textContent=name;el("hero-model").hidden=false;el("info-model").textContent=name;
-    el("minimum").textContent="En az "+settings.min_words+" sözcük";input.maxLength=settings.max_chars;
+    el("minimum").textContent=t("min",{n:number(settings.min_words)});input.maxLength=settings.max_chars;
     el("threshold").textContent=number(settings.threshold*100)+" / 100";
     drawDial();sync();
-  } catch {message("Model ayarları okunamadı. Sayfayı yenileyip tekrar dene.");}
+  } catch {message(t("modelError"));}
+  language();
 })();
+
+el("copy-result").onclick=async()=>{
+  if(!lastResult)return;
+  const report=`${t("result")}\n${t("score")}: ${number(lastResult.ai_score*100)}\n${t("threshold")}: ${number(lastResult.threshold*100)} / 100\n${t("inspected")}: ${t("pieces",{n:number(lastResult.windows),w:number(lastResult.word_count)})}\n${t("human")} / ${t("ai")}: ${lastResult.label==="AI"?t("ai"):t("human")}`;
+  try{await navigator.clipboard.writeText(report);const b=el("copy-result");b.textContent=t("copied");setTimeout(()=>{if(lastResult)b.textContent=t("copy");},1600);}catch{message(lang==="en"?"Clipboard access is unavailable in this browser.":"Bu tarayıcı panoya erişime izin vermiyor.");}
+};
+
+const surface=document.querySelector(".writing-surface");
+for(const event of ["dragenter","dragover"])surface.addEventListener(event,e=>{e.preventDefault();if(!busy)surface.classList.add("dragging");});
+for(const event of ["dragleave","drop"])surface.addEventListener(event,e=>{e.preventDefault();surface.classList.remove("dragging");});
+surface.addEventListener("drop",e=>{if(busy)return;const file=e.dataTransfer.files[0];if(file){const transfer=new DataTransfer();transfer.items.add(file);el("file").files=transfer.files;el("file").dispatchEvent(new Event("change"));}});
