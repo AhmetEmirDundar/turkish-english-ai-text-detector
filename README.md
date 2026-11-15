@@ -2,13 +2,13 @@
 
 ## GitHub kopyasını kullanma
 
-Depoda uygulama, eğitim kodu, model ayarları ve değerlendirme raporları bulunur. Yeni bir kopyada analiz çalıştırmak için Python ortamını kurup `requirements.txt` paketlerini yükle ve eğitimli V6 ağırlık dosyasını `models/detector_v6/xlmr/model.safetensors` yoluna yerleştir. Eğitimi tekrarlamak için ayrıca `data` klasöründeki kaynak notlarında açıklanan JSONL veri dosyaları gerekir. Büyük model ağırlıkları ve veri kümeleri yerel proje kopyasında tutulur.
+Depoda uygulama, eğitim kodu, model ayarları ve değerlendirme raporları bulunur. Web arayüzü analiz metnini Hugging Face Space'e iletir; büyük model ağırlıkları Vercel'e yüklenmez. Yerel model eğitimi ve analiz için `requirements-local.txt` paketlerini kurup model ağırlıklarını `models/detector_v6/xlmr/model.safetensors` yoluna yerleştir. Eğitimi tekrarlamak için `data` klasöründeki kaynak notlarında açıklanan JSONL dosyaları da gerekir.
 
 ## Web arayüzü
 
-Arayüz, analizleri [Hugging Face Space](https://huggingface.co/spaces/AhmetEmirDundar/ai-text-detector) üzerindeki V6 modeline gönderir. İnternet bağlantısı gerekir; ilk istekte Space uykudan uyanıyorsa yanıt gecikebilir. Girilen metin analiz edilmek üzere Hugging Face'e iletilir. Komut satırı ise yerel V6 modelini kullanır. Eski sürümlere ait değerlendirme raporları karşılaştırma amacıyla tutulur.
+Arayüz, analizleri [Hugging Face Space](https://huggingface.co/spaces/AhmetEmirDundar/ai-text-detector) üzerindeki modele gönderir. İnternet bağlantısı gerekir; Space uykudan uyanıyorsa ilk yanıt gecikebilir. Girilen metin analiz için Hugging Face'e iletilir. Vercel bu siteyi ücretsiz kişisel kullanımda barındırır; analiz servisi Hugging Face Space'te çalışır.
 
-Proje klasöründe PowerShell açıp yerel sunucuyu başlat:
+Proje klasöründe PowerShell açıp temel paketleri yükleyerek yerel sunucuyu başlat:
 
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
@@ -16,6 +16,8 @@ Proje klasöründe PowerShell açıp yerel sunucuyu başlat:
 ```
 
 Tarayıcıda [Metin Dedektörü](http://127.0.0.1:8765) adresini aç. En az 50 sözcüklük Türkçe veya İngilizce bir metin yapıştır, örnek metin seç veya **Dosya yükle** düğmesini kullan. TXT ve Markdown (`.md`, `.markdown`) dosyaları UTF-8 olarak okunur. PDF, Word (`.docx`), Excel (`.xlsx`, `.xls`) ve PowerPoint (`.pptx`) dosyalarından metin yerel olarak çıkarılır. Bu belgeler için boyut sınırı 20 MB, düzenleme alanı için 100.000 karakterdir.
+
+Yerel model analizi, eğitim ve değerlendirme komutları için ek paketleri kur: `python -m pip install -r requirements-local.txt`.
 
 Excel’de görünür çalışma sayfalarındaki metin hücreleri satır satır okunur. PowerPoint’te başlıklar, metin kutuları ve tablolar slayt sırasıyla okunur. Taranmış PDF’lere önce OCR ile metin tanıma uygula.
 

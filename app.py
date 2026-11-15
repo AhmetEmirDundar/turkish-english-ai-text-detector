@@ -10,6 +10,9 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit
 
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import FileResponse, JSONResponse
+
 from detector import ROOT, WINDOW_WORDS, windows
 from document_text import DOCUMENT_EXTENSIONS, MAX_DOCUMENT_BYTES, extract_document
 from gradio_client import Client
@@ -21,6 +24,117 @@ ASSETS = {"/": ("index.html", "text/html"), "/app.css": ("app.css", "text/css"),
 MAX_CHARS = 100_000
 HF_SPACE_ID = "AhmetEmirDundar/ai-text-detector"
 EXTRACT_ROUTES = {"/api/extract/" + ext[1:]: ext for ext in DOCUMENT_EXTENSIONS}
+app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
+_hf_client = None
+_hf_lock = threading.Lock()
+HOSTED_MAX_DOCUMENT_BYTES = 4 * 1024 * 1024
+
+
+@app.exception_handler(HTTPException)
+async def http_error(request, exc):
+    return JSONResponse({"error": exc.detail}, status_code=exc.status_code)
+
+
+def _hf_predict(text):
+    global _hf_client
+    with _hf_lock:
+        if _hf_client is None:
+            _hf_client = Client(HF_SPACE_ID, verbose=False)
+        output = _hf_client.predict(text, api_name="/analyze")
+
+    if not isinstance(output, (list, tuple)) or len(output) < 3:
+        raise RuntimeError("Hugging Face Space beklenmeyen bir yanıt döndürdü.")
+    score_text, label, details = (str(value) for value in output[:3])
+    score_match = re.search(r"([\d.,]+)\s*/\s*100", score_text)
+    threshold_match = re.search(r"karar eşiği\s+([\d.,]+)", details, re.IGNORECASE)
+    if not score_match or not threshold_match:
+        raise RuntimeError("Hugging Face Space yanıtı okunamadı.")
+
+    score = float(score_match.group(1).replace(",", ".")) / 100
+    threshold = float(threshold_match.group(1).replace(",", ".")) / 100
+    word_count = len(text.split())
+    return {"label": label, "ai_score": round(score, 6), "threshold": threshold,
+            "word_count": word_count, "windows": math.ceil(word_count / WINDOW_WORDS)}
+
+
+def _same_origin(request):
+    origin = request.headers.get("origin")
+    return origin is None or origin.rstrip("/") == str(request.base_url).rstrip("/")
+
+
+@app.get("/")
+def home():
+    return FileResponse(WEB / "index.html", media_type="text/html")
+
+
+@app.get("/app.css")
+def stylesheet():
+    return FileResponse(WEB / "app.css", media_type="text/css")
+
+
+@app.get("/app.js")
+def script():
+    return FileResponse(WEB / "app.js", media_type="text/javascript")
+
+
+@app.get("/api/model")
+def model_info():
+    settings = json.loads((DEFAULT_WEB_MODEL / "detector.json").read_text(encoding="utf-8"))
+    style_path = DEFAULT_WEB_MODEL / "style.json"
+    return {"name": "XLM-RoBERTa", "threshold": settings["threshold"],
+            "style_weight": settings.get("style_weight", 0) if style_path.is_file() else 0,
+            "min_words": WINDOW_WORDS, "max_chars": MAX_CHARS,
+            "max_document_bytes": HOSTED_MAX_DOCUMENT_BYTES,
+            "document_extensions": sorted(DOCUMENT_EXTENSIONS)}
+
+
+@app.post("/api/analyze")
+async def analyze(request: Request):
+    if not _same_origin(request):
+        raise HTTPException(403, "Bu istek bu siteden gönderilmelidir.")
+    if request.headers.get("content-type", "").split(";", 1)[0].strip().lower() != "application/json":
+        raise HTTPException(415, "JSON biçiminde metin bekleniyor.")
+    try:
+        raw = await request.body()
+        if not 0 < len(raw) <= MAX_CHARS * 6 + 100:
+            raise HTTPException(413, "Gönderilen metin boyut sınırının dışında.")
+        body = json.loads(raw)
+        text = body.get("text") if isinstance(body, dict) else None
+        if not isinstance(text, str):
+            raise ValueError("Analiz edilecek metni girin.")
+        if len(text) > MAX_CHARS:
+            raise HTTPException(413, "En fazla 100.000 karakter girilebilir.")
+        windows(text)
+    except json.JSONDecodeError:
+        raise HTTPException(400, "Metin okunamadı.") from None
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from None
+    try:
+        return _hf_predict(text)
+    except Exception:
+        traceback.print_exc()
+        raise HTTPException(503, "Hugging Face analiz servisine ulaşılamadı. Space'in çalıştığını kontrol edin.") from None
+
+
+@app.post("/api/extract/{extension}")
+async def extract_upload(extension: str, request: Request):
+    if not _same_origin(request):
+        raise HTTPException(403, "Bu istek bu siteden gönderilmelidir.")
+    suffix = "." + extension.lower().lstrip(".")
+    if suffix not in DOCUMENT_EXTENSIONS:
+        raise HTTPException(400, "PDF, Word, Excel veya PowerPoint dosyası seç.")
+    length = request.headers.get("content-length")
+    if length and int(length) > HOSTED_MAX_DOCUMENT_BYTES:
+        raise HTTPException(413, "Canlı sitede belge dosyaları en fazla 4 MB olabilir.")
+    data = await request.body()
+    if not data or len(data) > HOSTED_MAX_DOCUMENT_BYTES:
+        raise HTTPException(413, "Canlı sitede belge dosyaları boş olamaz ve en fazla 4 MB olabilir.")
+    try:
+        return {"text": extract_document(data, suffix, MAX_CHARS)}
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from None
+    except RuntimeError as exc:
+        raise HTTPException(503, str(exc)) from None
 
 
 class LocalServer(ThreadingHTTPServer):
@@ -91,6 +205,7 @@ class Handler(BaseHTTPRequestHandler):
                                    "version": self.server.model_dir.name.split("_")[-1], "threshold": settings["threshold"],
                                    "style_weight": settings.get("style_weight", 0) if (self.server.model_dir / "style.json").is_file() else 0,
                                    "min_words": WINDOW_WORDS, "max_chars": MAX_CHARS,
+                                   "max_document_bytes": MAX_DOCUMENT_BYTES,
                                    "document_extensions": sorted(DOCUMENT_EXTENSIONS)})
         if path not in ASSETS:
             return self.json(404, {"error": "Sayfa bulunamadı."})

@@ -78,13 +78,14 @@ async function readUpload(file, limit) {
     throw new Error("TXT, Markdown, PDF, Word (.docx), Excel (.xlsx, .xls) veya PowerPoint (.pptx) dosyası seç.");
   }
   if (!["txt", "md", "markdown"].includes(extension)) {
-    const restartMessage = "Açık sunucu bu dosya biçimini desteklemiyor. Eski sunucuyu kapat, güncel app.py dosyasını çalıştır ve sayfayı yenile.";
+    const restartMessage = "Bu dosya biçimi şu anda desteklenmiyor. TXT veya Markdown dosyası deneyebilirsin.";
     if (settings && !settings.document_extensions?.includes("." + extension)) throw new Error(restartMessage);
-    if (file.size > 20 * 1024 * 1024) throw new Error("Belge dosyaları en fazla 20 MB olabilir.");
+    const maxBytes = settings?.max_document_bytes ?? 20 * 1024 * 1024;
+    if (file.size > maxBytes) throw new Error(`Belge dosyaları en fazla ${Math.floor(maxBytes / 1024 / 1024)} MB olabilir.`);
     const response = await fetch("/api/extract/" + extension, {method: "POST", body: file});
     if (response.status === 404) throw new Error(restartMessage);
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error);
+    if (!response.ok) throw new Error(data.error || data.detail || "Belge okunamadı.");
     return data.text;
   }
   if (file.size > limit * 4 + 3) throw new Error("En fazla 100.000 karakter yüklenebilir.");
@@ -109,7 +110,7 @@ el("file").onchange = async () => {
     input.value=text; resetResult(); input.focus();
   } catch(err) {
     if(seq===loadedFile) {
-      message(err instanceof TypeError ? "Yerel sunucuya ulaşılamadı. Sunucuyu kontrol edip tekrar dene." : err.message);
+      message(err instanceof TypeError ? "Sunucuya ulaşılamadı. Biraz sonra tekrar dene." : err.message);
       sync();
     }
   }
@@ -124,7 +125,7 @@ form.onsubmit = async e => {
   try {
     const response=await fetch("/api/analyze",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:input.value})});
     const data=await response.json();
-    if(!response.ok) throw new Error(data.error);
+    if(!response.ok) throw new Error(data.error || data.detail || "Analiz tamamlanamadı.");
     el("score").textContent=number(data.ai_score*100);
     el("pieces").textContent=number(data.windows)+" parça · "+number(data.word_count)+" sözcük";
     el("threshold").textContent=number(data.threshold*100)+" / 100";
@@ -133,7 +134,7 @@ form.onsubmit = async e => {
     if(matchMedia("(max-width:800px)").matches) el("output").scrollIntoView({block:"nearest"});
   } catch(err) {
     el("score").textContent="—"; verdict("Analiz tamamlanamadı");
-    message(err instanceof TypeError ? "Yerel sunucuya ulaşılamadı. Sunucuyu başlatıp tekrar dene." : err.message);
+    message(err instanceof TypeError ? "Sunucuya ulaşılamadı. Biraz sonra tekrar dene." : err.message);
   } finally {busy=false;el("output").removeAttribute("aria-busy");sync();}
 };
 const dialog=el("info");
@@ -190,5 +191,5 @@ drawDial();sync();
     el("minimum").textContent="En az "+settings.min_words+" sözcük";input.maxLength=settings.max_chars;
     el("threshold").textContent=number(settings.threshold*100)+" / 100";
     drawDial();sync();
-  } catch {message("Model ayarları okunamadı. Yerel sunucuyu kontrol edip sayfayı yenile.");}
+  } catch {message("Model ayarları okunamadı. Sayfayı yenileyip tekrar dene.");}
 })();
