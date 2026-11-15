@@ -2,6 +2,7 @@
 import argparse
 import json
 import math
+import os
 import re
 import socket
 import threading
@@ -36,6 +37,16 @@ app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 _hf_client = None
 _hf_lock = threading.Lock()
 HOSTED_MAX_DOCUMENT_BYTES = 4 * 1024 * 1024
+HF_TOKEN = os.environ.get("HF_TOKEN")
+
+
+def _new_hf_client():
+    return Client(HF_SPACE_ID, hf_token=HF_TOKEN, verbose=False)
+
+
+def _is_zerogpu_quota_error(exc):
+    detail = str(exc).lower()
+    return "zerogpu quota" in detail or "exceeded your" in detail and "quota" in detail
 
 
 @app.exception_handler(HTTPException)
@@ -47,7 +58,7 @@ def _hf_predict(text):
     global _hf_client
     with _hf_lock:
         if _hf_client is None:
-            _hf_client = Client(HF_SPACE_ID, verbose=False)
+            _hf_client = _new_hf_client()
         output = _hf_client.predict(text, api_name="/analyze")
 
     if not isinstance(output, (list, tuple)) or len(output) < 3:
@@ -143,8 +154,13 @@ async def analyze(request: Request):
         raise HTTPException(400, str(exc)) from None
     try:
         return _hf_predict(text)
-    except Exception:
+    except Exception as exc:
         traceback.print_exc()
+        if _is_zerogpu_quota_error(exc):
+            detail = ("Hugging Face ZeroGPU kullanım kotası doldu. Vercel'de HF_TOKEN ayarlayın veya kota sıfırlanınca tekrar deneyin."
+                      if request.headers.get("accept-language", "tr").lower().startswith("tr") else
+                      "The Hugging Face ZeroGPU quota has been reached. Set HF_TOKEN in Vercel or retry after the quota resets.")
+            raise HTTPException(503, detail) from None
         raise HTTPException(503, "Hugging Face analiz servisine ulaşılamadı. Space'in çalıştığını kontrol edin.") from None
 
 
@@ -187,7 +203,7 @@ class LocalServer(ThreadingHTTPServer):
     def predict(self, text):
         with self.lock:
             if self.client is None:
-                self.client = Client(HF_SPACE_ID, verbose=False)
+                self.client = _new_hf_client()
             output = self.client.predict(text, api_name="/analyze")
 
         if not isinstance(output, (list, tuple)) or len(output) < 3:
@@ -284,8 +300,13 @@ class Handler(BaseHTTPRequestHandler):
             return self.json(400, {"error": str(exc)})
         try:
             result = self.server.predict(text)
-        except Exception:
+        except Exception as exc:
             traceback.print_exc()
+            if _is_zerogpu_quota_error(exc):
+                detail = ("Hugging Face ZeroGPU kullanım kotası doldu. Vercel'de HF_TOKEN ayarlayın veya kota sıfırlanınca tekrar deneyin."
+                          if self.headers.get("Accept-Language", "tr").lower().startswith("tr") else
+                          "The Hugging Face ZeroGPU quota has been reached. Set HF_TOKEN in Vercel or retry after the quota resets.")
+                return self.json(503, {"error": detail})
             return self.json(503, {"error": "Hugging Face analiz servisine ulaşılamadı. Space'in çalıştığını ve internet bağlantısını kontrol edin."})
         self.json(200, result)
 

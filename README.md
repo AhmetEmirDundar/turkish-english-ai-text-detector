@@ -2,6 +2,8 @@
 
 Web arayüzü analiz metnini [Hugging Face Space](https://huggingface.co/spaces/AhmetEmirDundar/ai-text-detector) üzerindeki modele gönderir. Site Vercel üzerinde yayınlanır. İlk analiz Space'in uyanmasını bekleyebilir.
 
+Space ZeroGPU kotasını doldurursa, Vercel projesinin Production ortamına `HF_TOKEN` adlı bir Hugging Face erişim belirteci ekle. Belirteci depoya veya kaynak koda koyma. Uygulama bu belirteçle Gradio istemcisinde kimlik doğrulaması yapar; kota henüz sıfırlanmamışsa tekrar denemek gerekebilir.
+
 ## Yerel arayüz
 
 ```powershell

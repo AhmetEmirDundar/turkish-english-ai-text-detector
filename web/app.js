@@ -153,7 +153,7 @@ form.onsubmit = async e => {
   el("score").textContent="…"; el("pieces").textContent="—";drawDial();
   verdict("Model metni inceliyor…","busy");
   try {
-    const response=await fetch("/api/analyze",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:input.value})});
+    const response=await fetch("/api/analyze",{method:"POST",headers:{"Content-Type":"application/json","Accept-Language":lang},body:JSON.stringify({text:input.value})});
     const data=await response.json();
     if(!response.ok) throw new Error(data.error || data.detail || "Analiz tamamlanamadı.");
     lastResult=data;el("copy-result").disabled=false;
