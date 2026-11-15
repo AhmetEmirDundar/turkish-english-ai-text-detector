@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Türkçe ve İngilizce metin analiz aracının nasıl çalıştığını öğrenin.">
+  <meta name="theme-color" content="#211c40"><title>Nasıl çalışır? · Metin Dedektörü</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <header class="top"><div class="wrap top-inner">
+    <a class="brand brand-home" href="/"><span class="brandmark"><svg><path d="M1.5 12h4l2.8-7 4.1 15 3.2-13 2.2 5h4.7"/></svg></span>Metin Dedektörü</a>
+    <nav class="site-nav" aria-label="Site menüsü"><a href="/nasil-calisir" aria-current="page">Nasıl çalışır?</a><a href="/sinirlamalar">Sınırlamalar</a><a href="/gizlilik">Gizlilik</a><a href="/iletisim">İletişim</a></nav>
+    <div class="header-tools"><span class="local"><i></i> Çevrimiçi</span></div>
+  </div></header>
+  <main class="wrap page-main">
+    <p class="page-kicker">Metin Dedektörü</p><h1>Nasıl çalışır?</h1>
+    <p class="page-intro">Araç, Türkçe veya İngilizce bir metnin yapay zekâ tarafından yazılmış olma sinyallerini inceler ve sonuçları tahmin olarak sunar.</p>
+    <article class="page-card">
+      <h2>Analiz adımları</h2>
+      <ol>
+        <li>En az 50 sözcük içeren metni yapıştır veya desteklenen bir belgeyi yükle.</li>
+        <li>Metin analiz hizmetine güvenli bağlantı üzerinden iletilir. Belge dosyalarının metni önce çıkarılır.</li>
+        <li>Model, metni sözcük parçaları halinde inceler ve bir AI skoru üretir.</li>
+        <li>Skor karar eşiğiyle karşılaştırılır; arayüzde tahmin ve incelenen sözcük sayısı gösterilir.</li>
+      </ol>
+      <h2>Skor ne anlama geliyor?</h2>
+      <p>Skor, modelin metinde AI yazımına benzer örüntüler bulma düzeyidir. Bir kişinin AI kullandığının kanıtı veya kesin bir olasılık değildir. Sonucu bağlam, taslak geçmişi ve başka kanıtlarla birlikte değerlendirmek gerekir.</p>
+      <h2>Metin nereye gönderilir?</h2>
+      <p>Analiz isteği bu site üzerinden Hugging Face'teki model hizmetine aktarılır. Ayrıntılar için <a href="/gizlilik">gizlilik açıklamasını</a> incele.</p>
+      <p>Model hizmetini ve Space'in açıklamasını <a href="https://huggingface.co/spaces/AhmetEmirDundar/ai-text-detector" rel="noopener noreferrer">Hugging Face model sayfasında</a> görebilirsin.</p>
+      <div class="page-actions"><a href="/">Metin analizine dön</a><a href="/sinirlamalar">Sınırlamaları oku</a></div>
+    </article>
+  </main>
+  <footer class="wrap"><span>Sonuç yalnızca tahmindir.</span><nav class="footer-nav" aria-label="Bilgi sayfaları"><a href="/nasil-calisir">Nasıl çalışır?</a><a href="/sinirlamalar">Sınırlamalar</a><a href="/gizlilik">Gizlilik</a><a href="/iletisim">İletişim</a></nav></footer>
+</body></html>

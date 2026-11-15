@@ -21,6 +21,13 @@ WEB = Path(__file__).resolve().parent / "web"
 DEFAULT_WEB_MODEL = ROOT / "models" / "detector_v6"
 ASSETS = {"/": ("index.html", "text/html"), "/app.css": ("app.css", "text/css"),
           "/app.js": ("app.js", "text/javascript")}
+INFO_PAGES = {
+    "/nasil-calisir": "nasil-calisir.html",
+    "/sinirlamalar": "sinirlamalar.html",
+    "/gizlilik": "gizlilik.html",
+    "/iletisim": "iletisim.html",
+}
+ASSETS.update({route: (filename, "text/html") for route, filename in INFO_PAGES.items()})
 MAX_CHARS = 100_000
 HF_SPACE_ID = "AhmetEmirDundar/ai-text-detector"
 EXTRACT_ROUTES = {"/api/extract/" + ext[1:]: ext for ext in DOCUMENT_EXTENSIONS}
@@ -75,6 +82,15 @@ def stylesheet():
 @app.get("/app.js")
 def script():
     return FileResponse(WEB / "app.js", media_type="text/javascript")
+
+
+def serve_info_page(filename):
+    return FileResponse(WEB / filename, media_type="text/html")
+
+
+for route, filename in INFO_PAGES.items():
+    app.add_api_route(route, lambda filename=filename: serve_info_page(filename),
+                      methods=["GET"], include_in_schema=False)
 
 
 @app.get("/api/model")
