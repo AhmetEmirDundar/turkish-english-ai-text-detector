@@ -1,8 +1,0 @@
-{
-  "model": "xlmr",
-  "slope": 0.7523923213833409,
-  "intercept": -1.3994557968093935,
-  "threshold": 0.6025534358235655,
-  "style_weight": 0.03142915641559397,
-  "fusion_validation_count": 1024
-}
