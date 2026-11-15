@@ -2,5 +2,7 @@
   "model": "xlmr",
   "slope": 0.6121314163867865,
   "intercept": -0.17548658931260078,
-  "threshold": 0.6085817936649918
+  "threshold": 0.6085817936649918,
+  "style_weight": 0.005428682502015456,
+  "fusion_validation_count": 1024
 }

@@ -1,0 +1,167 @@
+{
+  "dataset": "https://huggingface.co/datasets/MichiganNLP/MAiDE-up/blob/045e9933ba5c8c216a49c5efc69d07a766c38c3e/all_data.csv",
+  "sha256": "ba7e6c05f81fe4c7d05cefb4b6ab8650a80020b4986156c14a9ed1aad0f81d5e",
+  "model": "xlmr",
+  "threshold": 0.6085817936649918,
+  "results": {
+    "overall": {
+      "n": 500,
+      "accuracy": 0.744,
+      "macro_f1": 0.7350291467938527,
+      "ai_precision": 0.8860759493670886,
+      "ai_recall": 0.56,
+      "human_false_positive_rate": 0.072,
+      "tn": 232,
+      "fp": 18,
+      "fn": 110,
+      "tp": 140,
+      "brier_score": 0.20693525371169
+    },
+    "tr": {
+      "n": 250,
+      "accuracy": 0.816,
+      "macro_f1": 0.8155750849958304,
+      "ai_precision": 0.8495575221238938,
+      "ai_recall": 0.768,
+      "human_false_positive_rate": 0.136,
+      "tn": 108,
+      "fp": 17,
+      "fn": 29,
+      "tp": 96,
+      "brier_score": 0.155503832985944
+    },
+    "en": {
+      "n": 250,
+      "accuracy": 0.672,
+      "macro_f1": 0.6345811051693404,
+      "ai_precision": 0.9777777777777777,
+      "ai_recall": 0.352,
+      "human_false_positive_rate": 0.008,
+      "tn": 124,
+      "fp": 1,
+      "fn": 81,
+      "tp": 44,
+      "brier_score": 0.258366674437436
+    }
+  },
+  "primary_results": {
+    "overall": {
+      "n": 500,
+      "accuracy": 0.744,
+      "macro_f1": 0.7350291467938527,
+      "ai_precision": 0.8860759493670886,
+      "ai_recall": 0.56,
+      "human_false_positive_rate": 0.072,
+      "tn": 232,
+      "fp": 18,
+      "fn": 110,
+      "tp": 140,
+      "brier_score": 0.20737703650716663
+    },
+    "tr": {
+      "n": 250,
+      "accuracy": 0.816,
+      "macro_f1": 0.8155750849958304,
+      "ai_precision": 0.8495575221238938,
+      "ai_recall": 0.768,
+      "human_false_positive_rate": 0.136,
+      "tn": 108,
+      "fp": 17,
+      "fn": 29,
+      "tp": 96,
+      "brier_score": 0.15586736223054393
+    },
+    "en": {
+      "n": 250,
+      "accuracy": 0.672,
+      "macro_f1": 0.6345811051693404,
+      "ai_precision": 0.9777777777777777,
+      "ai_recall": 0.352,
+      "human_false_positive_rate": 0.008,
+      "tn": 124,
+      "fp": 1,
+      "fn": 81,
+      "tp": 44,
+      "brier_score": 0.25888671078378933
+    }
+  },
+  "style_threshold": 0.8280996660048597,
+  "style_human_threshold": 0.1560786257395282,
+  "style_results": {
+    "overall": {
+      "insufficient_text": 4,
+      "uncertain": 296,
+      "decided_metrics": {
+        "n": 200,
+        "accuracy": 0.705,
+        "macro_f1": 0.5158974358974359,
+        "ai_precision": 0.8,
+        "ai_recall": 0.12307692307692308,
+        "human_false_positive_rate": 0.014814814814814815,
+        "tn": 133,
+        "fp": 2,
+        "fn": 57,
+        "tp": 8,
+        "brier_score": 0.25704749606418004
+      },
+      "agree": {
+        "n": 175,
+        "primary_errors": 41
+      },
+      "disagree": {
+        "n": 25,
+        "primary_errors": 7
+      }
+    },
+    "tr": {
+      "insufficient_text": 3,
+      "uncertain": 165,
+      "decided_metrics": {
+        "n": 82,
+        "accuracy": 0.7439024390243902,
+        "macro_f1": 0.5601532567049808,
+        "ai_precision": 0.6666666666666666,
+        "ai_recall": 0.17391304347826086,
+        "human_false_positive_rate": 0.03389830508474576,
+        "tn": 57,
+        "fp": 2,
+        "fn": 19,
+        "tp": 4,
+        "brier_score": 0.22172052636107317
+      },
+      "agree": {
+        "n": 66,
+        "primary_errors": 9
+      },
+      "disagree": {
+        "n": 16,
+        "primary_errors": 4
+      }
+    },
+    "en": {
+      "insufficient_text": 1,
+      "uncertain": 131,
+      "decided_metrics": {
+        "n": 118,
+        "accuracy": 0.6779661016949152,
+        "macro_f1": 0.48695652173913045,
+        "ai_precision": 1.0,
+        "ai_recall": 0.09523809523809523,
+        "human_false_positive_rate": 0.0,
+        "tn": 76,
+        "fp": 0,
+        "fn": 38,
+        "tp": 4,
+        "brier_score": 0.2815967461968475
+      },
+      "agree": {
+        "n": 109,
+        "primary_errors": 32
+      },
+      "disagree": {
+        "n": 9,
+        "primary_errors": 3
+      }
+    }
+  }
+}

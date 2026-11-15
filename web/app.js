@@ -178,7 +178,14 @@ drawDial();sync();
   try {
     const res=await fetch("/api/model"); if(!res.ok) throw new Error();
     settings=await res.json();
-    const name=settings.name+" · "+settings.version;
+    const name=settings.name;
+    el("output-heading").textContent="Analiz sonucu";
+    if (typeof settings.style_weight === "number") {
+      el("info-style").textContent=settings.style_weight > 0
+        ? "Üslup modeli cümle yapısını, sözcük çeşitliliğini ve tekrarı inceler. Üslup skorunun genel skordaki ağırlığı %"
+          +number(settings.style_weight*100)+". Yeterli sözcük bulunmadığında ana skor kullanılır."
+        : "Bu sürümde genel skoru ana model belirler.";
+    }
     el("hero-model").textContent=name;el("hero-model").hidden=false;el("info-model").textContent=name;
     el("minimum").textContent="En az "+settings.min_words+" sözcük";input.maxLength=settings.max_chars;
     el("threshold").textContent=number(settings.threshold*100)+" / 100";

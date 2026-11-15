@@ -6,9 +6,10 @@ from pathlib import Path
 
 import numpy as np
 from document_text import DOCUMENT_EXTENSIONS, MAX_DOCUMENT_BYTES, extract_document
+from style_analysis import FEATURES, style_prediction
 
 ROOT = Path(__file__).resolve().parent
-DEFAULT_MODEL = ROOT / "models" / "detector_v2"
+DEFAULT_MODEL = ROOT / "models" / "detector_v6"
 WINDOW_WORDS = 50
 MAX_TOKENS = 160
 BATCH_SIZE = 8
@@ -27,10 +28,20 @@ def probability(logit, settings):
     return 1.0 / (1.0 + math.exp(-max(-50.0, min(50.0, value))))
 
 
+def combine_scores(primary, support, style_weight):
+    if support["status"] != "ok":
+        return primary
+    return primary + style_weight * (support["ai_score"] - primary)
+
+
 class Detector:
     def __init__(self, directory=DEFAULT_MODEL, device=None):
         self.directory = Path(directory)
         self.settings = json.loads((self.directory / "detector.json").read_text(encoding="utf-8"))
+        style_path = self.directory / "style.json"
+        self.style = json.loads(style_path.read_text(encoding="utf-8")) if style_path.is_file() else None
+        if self.style is not None and self.style["features"] != list(FEATURES):
+            raise ValueError("Üslup modeli bu özellik sürümüyle uyumlu değil.")
         if self.settings["model"] == "tfidf":
             import joblib
             self.model = joblib.load(self.directory / "tfidf.joblib")
@@ -78,13 +89,22 @@ class Detector:
             word_count += sum(lengths)
         return weighted_sum / word_count
 
-    def predict(self, text):
+    def predict(self, text, *, diagnostics=False):
         pieces = windows(text)
         logit = self.document_logit(pieces)
-        score = probability(logit, self.settings)
-        return {"label": "AI" if score >= self.settings["threshold"] else "İnsan",
+        primary = probability(logit, self.settings)
+        threshold = self.settings["threshold"]
+        score = primary
+        support = None
+        if self.style is not None:
+            support = style_prediction(text, self.style, "AI" if primary >= threshold else "İnsan")
+            score = combine_scores(primary, support, self.settings.get("style_weight", 0.0))
+        result = {"label": "AI" if score >= threshold else "İnsan",
                 "ai_score": round(score, 6), "threshold": self.settings["threshold"],
                 "word_count": len(text.split()), "windows": len(pieces)}
+        if diagnostics:
+            result.update(primary_score=primary, style_analysis=support)
+        return result
 
 
 def main():

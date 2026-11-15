@@ -1,0 +1,95 @@
+{
+  "validation": {
+    "overall": {
+      "AI": {
+        "actual_ai": 428,
+        "actual_human": 64
+      },
+      "İnsan": {
+        "actual_ai": 54,
+        "actual_human": 1150
+      },
+      "Belirsiz": {
+        "actual_ai": 1018,
+        "actual_human": 1032
+      }
+    },
+    "tr": {
+      "AI": {
+        "actual_ai": 285,
+        "actual_human": 37
+      },
+      "İnsan": {
+        "actual_ai": 17,
+        "actual_human": 330
+      },
+      "Belirsiz": {
+        "actual_ai": 448,
+        "actual_human": 383
+      }
+    },
+    "en": {
+      "AI": {
+        "actual_ai": 143,
+        "actual_human": 27
+      },
+      "İnsan": {
+        "actual_ai": 37,
+        "actual_human": 820
+      },
+      "Belirsiz": {
+        "actual_ai": 570,
+        "actual_human": 649
+      }
+    }
+  },
+  "test": {
+    "overall": {
+      "AI": {
+        "actual_ai": 410,
+        "actual_human": 51
+      },
+      "İnsan": {
+        "actual_ai": 61,
+        "actual_human": 1175
+      },
+      "Belirsiz": {
+        "actual_ai": 1028,
+        "actual_human": 1019
+      }
+    },
+    "tr": {
+      "AI": {
+        "actual_ai": 248,
+        "actual_human": 26
+      },
+      "İnsan": {
+        "actual_ai": 20,
+        "actual_human": 356
+      },
+      "Belirsiz": {
+        "actual_ai": 481,
+        "actual_human": 368
+      }
+    },
+    "en": {
+      "AI": {
+        "actual_ai": 162,
+        "actual_human": 25
+      },
+      "İnsan": {
+        "actual_ai": 41,
+        "actual_human": 819
+      },
+      "Belirsiz": {
+        "actual_ai": 547,
+        "actual_human": 651
+      }
+    }
+  },
+  "excluded": {
+    "train": 40,
+    "validation": 5,
+    "test": 8
+  }
+}

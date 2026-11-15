@@ -1,0 +1,282 @@
+{
+  "pep_revision": "6905c6ce669f4792f08149102b87b9ea9ec339b4",
+  "europe_pmc": [
+    {
+      "pmcid": "PMC3799567",
+      "doi": "10.2196/jmir.1943",
+      "date": "2012-05-16",
+      "journal": "J Med Internet Res",
+      "sha256": "de160ee283981d7db03d03112ccbdfef049784c6bf21833276fae05bab5e165d"
+    },
+    {
+      "pmcid": "PMC3961150",
+      "doi": "10.7717/peerj.289",
+      "date": "2014-03-11",
+      "journal": "PeerJ",
+      "sha256": "b099ce6f5143b7335ab62733d3d4ed36bf75181a2053ab2288fadd25a98decd6"
+    },
+    {
+      "pmcid": "PMC4101962",
+      "doi": "10.1155/2014/379295",
+      "date": "2014-07-02",
+      "journal": "Biomed Res Int",
+      "sha256": "6bf54cf087e7882864cda11b37c74ef88c0405cc3ca1a0d19e2aab3654210ad8"
+    },
+    {
+      "pmcid": "PMC4748013",
+      "doi": "10.1007/s11548-015-1252-8",
+      "date": "2015-08-11",
+      "journal": "Int J Comput Assist Radiol Surg",
+      "sha256": "d6d3e731e960a3147f4a81441504e0afc5a6b115092f8b09a1b2af4489e768f2"
+    },
+    {
+      "pmcid": "PMC4843008",
+      "doi": "10.1038/srep24826",
+      "date": "2016-04-25",
+      "journal": "Sci Rep",
+      "sha256": "163dd1bafd51562a5d8aca1c745bfb3867a3b910bd60832d596aadfa69770114"
+    },
+    {
+      "pmcid": "PMC4890079",
+      "doi": "10.1016/j.mex.2016.05.006",
+      "date": "2016-05-24",
+      "journal": "MethodsX",
+      "sha256": "5bdd07e485331c21fe9c2361eb97127a75a9a004542ba296922e525e07d45b9f"
+    },
+    {
+      "pmcid": "PMC4946074",
+      "doi": "10.1016/j.heliyon.2016.e00100",
+      "date": "2016-04-29",
+      "journal": "Heliyon",
+      "sha256": "71557e7aee432b80913aba642a5df3ee7b0474586ccc59801ac1874c0cb7a3de"
+    },
+    {
+      "pmcid": "PMC5036226",
+      "doi": "10.1080/19479832.2015.1015459",
+      "date": "2015-03-30",
+      "journal": "Int J Image Data Fusion",
+      "sha256": "66e4dca7a16079585614ee5c4bf841f6ba1b789f2e80d5808281919298bf5fad"
+    },
+    {
+      "pmcid": "PMC5067907",
+      "doi": "10.1186/s13321-016-0171-1",
+      "date": "2016-10-17",
+      "journal": "J Cheminform",
+      "sha256": "f80579008a49e27ffd7596a641ab0c7d244209c8a8b8b444f50433b96f37a72a"
+    },
+    {
+      "pmcid": "PMC5070411",
+      "doi": "10.1016/j.ecolmodel.2016.09.013",
+      "date": "2016-11-01",
+      "journal": "Ecol Modell",
+      "sha256": "5a04d23aa306defe65f2c41f156ffc51541648ab3a824b128b435eee9ee30634"
+    },
+    {
+      "pmcid": "PMC5128723",
+      "doi": "10.2196/mhealth.5996",
+      "date": "2016-11-15",
+      "journal": "JMIR Mhealth Uhealth",
+      "sha256": "60f536ccc92e8519cd07159b721ff57bf6ac419aaaf8a6ce8f0ba5e376ce7a04"
+    },
+    {
+      "pmcid": "PMC5219713",
+      "doi": "10.1186/s12911-016-0402-4",
+      "date": "2017-01-07",
+      "journal": "BMC Med Inform Decis Mak",
+      "sha256": "dd99121bdba039c73bc33b889abc0eb2516d9e06c6530db9028af17b14443df0"
+    },
+    {
+      "pmcid": "PMC5249178",
+      "doi": "10.1371/journal.pone.0170662",
+      "date": "2017-01-20",
+      "journal": "PLoS One",
+      "sha256": "3e984ec01eb1e1050a1de242504497e0ad33235f2514555e71f894768ffaf803"
+    },
+    {
+      "pmcid": "PMC5259907",
+      "doi": "10.1186/s12918-016-0365-1",
+      "date": "2016-12-23",
+      "journal": "BMC Syst Biol",
+      "sha256": "ff500b7ac11ed5fd776a0818abc1a02d701383db32e88eaab22e72ba40d11485"
+    },
+    {
+      "pmcid": "PMC5387389",
+      "doi": "10.1186/s12859-017-1602-3",
+      "date": "2017-04-11",
+      "journal": "BMC Bioinformatics",
+      "sha256": "0d08d0f026a528142533e0dbb37255fafb59661f8478f7cc1c5b728bd52f2e3f"
+    },
+    {
+      "pmcid": "PMC5430634",
+      "doi": "10.1038/s41598-017-01251-z",
+      "date": "2017-04-26",
+      "journal": "Sci Rep",
+      "sha256": "881c4b530ab76f56f4dfe25fe1cf7038b22eb18c7f73f1344467dc8ac259f630"
+    },
+    {
+      "pmcid": "PMC5462751",
+      "doi": "10.1038/s41598-017-03011-5",
+      "date": "2017-06-07",
+      "journal": "Sci Rep",
+      "sha256": "bc7491caf3548bfa9ad3a4efee65fe06e1bbbce80a6d15dd7f2348bf98fb3a74"
+    },
+    {
+      "pmcid": "PMC5485338",
+      "doi": "10.1155/2017/9806479",
+      "date": "2017-06-11",
+      "journal": "Scientifica (Cairo)",
+      "sha256": "3eca9d0af2f70f530bc156c1976e80c581e1604a2e83b163b4c76e9a78128a98"
+    },
+    {
+      "pmcid": "PMC5487956",
+      "doi": "10.3390/microarrays6020009",
+      "date": "2017-05-29",
+      "journal": "Microarrays (Basel)",
+      "sha256": "ae7719b09cf54cbbd4e6cc8f997cf0e2d8ecfefd2eb430318ce811f2efa62970"
+    },
+    {
+      "pmcid": "PMC5524285",
+      "doi": "10.1371/journal.pone.0179805",
+      "date": "2017-07-24",
+      "journal": "PLoS One",
+      "sha256": "020240fbc60799f2e0f5fde7f94632d82204927a4164e4eb2af0ead95083ec90"
+    },
+    {
+      "pmcid": "PMC5537092",
+      "doi": "10.1007/s10278-017-9976-3",
+      "date": "2017-08-01",
+      "journal": "J Digit Imaging",
+      "sha256": "7edad02d3c6181e77a6737ef9802fb3ac67b60a51b4cd4b06512d2022a215317"
+    },
+    {
+      "pmcid": "PMC5552126",
+      "doi": "10.1371/journal.pone.0180908",
+      "date": "2017-08-10",
+      "journal": "PLoS One",
+      "sha256": "6844a264107f3085e57e35ed51718847d62b5a26e328262d075f99fd3bf124db"
+    },
+    {
+      "pmcid": "PMC5564607",
+      "doi": "10.18632/oncotarget.18001",
+      "date": "2017-07-01",
+      "journal": "Oncotarget",
+      "sha256": "895086999d60ed46d63c68df5ae216abe84c5713c73df6ef3ce611db81f17574"
+    },
+    {
+      "pmcid": "PMC5590459",
+      "doi": "10.3390/bioengineering4020045",
+      "date": "2017-05-19",
+      "journal": "Bioengineering (Basel)",
+      "sha256": "6ec97b4e5475dbb17bb231a64ed4efd7faa0f5a119dcc7586784bf744bf8bf1b"
+    },
+    {
+      "pmcid": "PMC5590884",
+      "doi": "10.1371/journal.pone.0183990",
+      "date": "2017-09-08",
+      "journal": "PLoS One",
+      "sha256": "eda39c58ec0636207ecc51008d540ae8e0911ef3000397096ea81c7ce7761fab"
+    },
+    {
+      "pmcid": "PMC5599725",
+      "doi": "10.1038/s41598-017-11196-y",
+      "date": "2017-09-14",
+      "journal": "Sci Rep",
+      "sha256": "294a100fb179b0bbd705d890348b4962851058db31e1943791680f0c3fb3dbb9"
+    },
+    {
+      "pmcid": "PMC5622112",
+      "doi": "10.1038/s41598-017-12378-4",
+      "date": "2017-09-29",
+      "journal": "Sci Rep",
+      "sha256": "cd93da6fc34177b14b54a237008f59928c4c567b7bf627a753e082f522321a92"
+    },
+    {
+      "pmcid": "PMC5622420",
+      "doi": "10.1186/s12859-017-1841-3",
+      "date": "2017-09-30",
+      "journal": "BMC Bioinformatics",
+      "sha256": "8f5310de2a8d75e60b8a11decaf46dbe01f5ff7e263118fc1a4aa11307b69c89"
+    },
+    {
+      "pmcid": "PMC5627249",
+      "doi": "10.1038/s41598-017-13056-1",
+      "date": "2017-10-04",
+      "journal": "Sci Rep",
+      "sha256": "de3f227c8e37ef7647548df6b1cca47ab59ccd350b1f62dcd1456636f4d4016b"
+    },
+    {
+      "pmcid": "PMC5629557",
+      "doi": "10.1186/s12859-017-1800-z",
+      "date": "2017-10-03",
+      "journal": "BMC Bioinformatics",
+      "sha256": "d9401fada80ab7f813bc7630eb31c966f7ca03558ef8c9a36e577f1fcf13d8c0"
+    },
+    {
+      "pmcid": "PMC5636952",
+      "doi": "10.1039/c7sc02267k",
+      "date": "2017-08-10",
+      "journal": "Chem Sci",
+      "sha256": "7a7ca16036c8fd7015fff3db5e615799b82d30978d9a5ff4188ead8b2ce8b9e9"
+    },
+    {
+      "pmcid": "PMC5643431",
+      "doi": "10.1038/s41598-017-13196-4",
+      "date": "2017-10-16",
+      "journal": "Sci Rep",
+      "sha256": "c4832d58c9197bccbcc0ce6d0680edcd5130f6d142c4ee465f58b523dc87f6b6"
+    },
+    {
+      "pmcid": "PMC5679148",
+      "doi": "10.1186/s13326-017-0157-6",
+      "date": "2017-11-09",
+      "journal": "J Biomed Semantics",
+      "sha256": "65434238087d33264587bdb22473651b27b6e6825ff0203e00ae031d85f849ba"
+    },
+    {
+      "pmcid": "PMC5716558",
+      "doi": "10.1120/jacmp.v13i3.3599",
+      "date": "2012-05-10",
+      "journal": "J Appl Clin Med Phys",
+      "sha256": "df15c1971ac80e67dbde813b8aca73fbdfe5665f36fd598d88ff0b09fa9cfe1c"
+    },
+    {
+      "pmcid": "PMC5725843",
+      "doi": "10.1186/s13040-017-0154-4",
+      "date": "2017-12-11",
+      "journal": "BioData Min",
+      "sha256": "b8c4d0b422b0c7b3869380e6cee74e8ae54363993fa25f2cc2875b924405b86e"
+    },
+    {
+      "pmcid": "PMC5735677",
+      "doi": "10.1155/2017/5707162",
+      "date": "2017-11-22",
+      "journal": "J Healthc Eng",
+      "sha256": "455f81de6af23c7ec874bf1a174d8200869c556f01e470b23e553342819d90e6"
+    },
+    {
+      "pmcid": "PMC5736185",
+      "doi": "10.1371/journal.pone.0190012",
+      "date": "2017-12-19",
+      "journal": "PLoS One",
+      "sha256": "79c905a26f36fb2d67fc27e452aacc6c2e2b895daf007299fe1487b3021ac38c"
+    },
+    {
+      "pmcid": "PMC5740932",
+      "doi": "10.1186/s13007-017-0266-3",
+      "date": "2017-12-22",
+      "journal": "Plant Methods",
+      "sha256": "70ff19a0109b9b75b3025a45d481db4243bb0e5704fa05fbcf81929675b2abf6"
+    },
+    {
+      "pmcid": "PMC5751538",
+      "doi": "10.1186/s12918-017-0476-3",
+      "date": "2017-12-14",
+      "journal": "BMC Syst Biol",
+      "sha256": "16e0ec8b8789e059cee5c691b4996bba814c82e60124963ff297d14d4df3830e"
+    }
+  ],
+  "output_sha256": {
+    "train": "f14be6fb95efd4d2f30720172ad4774902710298d7056a7c147ba08ac6262fe6",
+    "holdout": "95afbbd27a3ff337d5aae52e7f6273c0cd9c66a9f14c96c34af7b5a308b36684"
+  }
+}

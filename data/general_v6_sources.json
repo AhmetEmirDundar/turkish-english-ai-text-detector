@@ -1,0 +1,302 @@
+{
+  "cache_files": [
+    {
+      "file": "bilcat-ea9f926b2114c6c6a0a1983ef45eb13557ed6188.zip",
+      "sha256": "f90d686dd0166126ff56503b8a6bd5b612ed72e8e70b4a6f09c3bec2cae73eef",
+      "source_url": "https://codeload.github.com/BilkentInformationRetrievalGroup/BilCat/zip/ea9f926b2114c6c6a0a1983ef45eb13557ed6188"
+    },
+    {
+      "file": "pg11.txt",
+      "sha256": "01b38ea4c710a84bc18d0bd41271a5a1a92b94e97b2812f4dece97d4a694725e",
+      "source_url": "https://www.gutenberg.org/cache/epub/11/pg11.txt"
+    },
+    {
+      "file": "pg120.txt",
+      "sha256": "5bc08275eacea8640b1aa185c645283bb8c564d7b23df6b03437d229b4fc6ebd",
+      "source_url": "https://www.gutenberg.org/cache/epub/120/pg120.txt"
+    },
+    {
+      "file": "pg1260.txt",
+      "sha256": "13414dee2951c3ee731d76d2ffd822016b2479c892162760c5d0eb2aa5fa7631",
+      "source_url": "https://www.gutenberg.org/cache/epub/1260/pg1260.txt"
+    },
+    {
+      "file": "pg1400.txt",
+      "sha256": "9a637118af8e953e9764ec603d9b0a032883384d465acac2e27966a80cf1c6f8",
+      "source_url": "https://www.gutenberg.org/cache/epub/1400/pg1400.txt"
+    },
+    {
+      "file": "pg161.txt",
+      "sha256": "7bcd77c45cb32fb8d9f89402561270cc6a911c0a4e20667176d5be779fc3974a",
+      "source_url": "https://www.gutenberg.org/cache/epub/161/pg161.txt"
+    },
+    {
+      "file": "pg205.txt",
+      "sha256": "2d9a76a2e3e8195c69430516ebd33c4d0757a53ad432ff6186b7b794e6fe99f9",
+      "source_url": "https://www.gutenberg.org/cache/epub/205/pg205.txt"
+    },
+    {
+      "file": "pg245.txt",
+      "sha256": "91388a58a49f9c321fc5b1611560b0302d043a7e955c2f3f6c619d91befc8f01",
+      "source_url": "https://www.gutenberg.org/cache/epub/245/pg245.txt"
+    },
+    {
+      "file": "pg308.txt",
+      "sha256": "96f8a59418b81354aeccad6065c160fe796867cd7ebcdc0fe95183ae23fcb63c",
+      "source_url": "https://www.gutenberg.org/cache/epub/308/pg308.txt"
+    },
+    {
+      "file": "pg45.txt",
+      "sha256": "89a5e9fb2e0bb44562a969785385366f94e1da736aebee7d9cdf459eb0b5f9f6",
+      "source_url": "https://www.gutenberg.org/cache/epub/45/pg45.txt"
+    },
+    {
+      "file": "pg514.txt",
+      "sha256": "36831477b339dbcd7e7206119d77e9e58b9727ef3c299d1a1dc4446e1db97850",
+      "source_url": "https://www.gutenberg.org/cache/epub/514/pg514.txt"
+    },
+    {
+      "file": "pg55.txt",
+      "sha256": "969bffab7740d4d8a0bac332d78bd0152ad4a40a2efc52f06c74a9bb6120be75",
+      "source_url": "https://www.gutenberg.org/cache/epub/55/pg55.txt"
+    },
+    {
+      "file": "pg65061.txt",
+      "sha256": "d2718031e98e4f4bc2237353a47ad7e2885aadec01a0b19a057f563ad3c6bbe1",
+      "source_url": "https://www.gutenberg.org/cache/epub/65061/pg65061.txt"
+    },
+    {
+      "file": "pg98.txt",
+      "sha256": "d54c2b80d40a40b982cd88852c6180bb944d95acdb028af3d0e01a1750681784",
+      "source_url": "https://www.gutenberg.org/cache/epub/98/pg98.txt"
+    },
+    {
+      "file": "se-bicycles-1.json",
+      "sha256": "eb9f46eb7d13dd21e093e67e7c18777eeff2c4d20b43a581fa8149d58cb89c1f",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=bicycles&filter=withbody&todate=1514764799&pagesize=100&page=1&order=desc&sort=votes"
+    },
+    {
+      "file": "se-bicycles-2.json",
+      "sha256": "5f7d3749050436a2d83e63c2aba1ccad7c72f704834d3e95780410e1df293736",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=bicycles&filter=withbody&todate=1514764799&pagesize=100&page=2&order=desc&sort=votes"
+    },
+    {
+      "file": "se-bicycles-3.json",
+      "sha256": "10cf2e781cd8e53b3b528bbe5f240053a999fdbe937dffe7ced9bfded606332a",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=bicycles&filter=withbody&todate=1514764799&pagesize=100&page=3&order=desc&sort=votes"
+    },
+    {
+      "file": "se-boardgames-1.json",
+      "sha256": "21308a77f386bb813797a0c8c4fc38f4f839ff9fe0eacee52faf63a4c260634b",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=boardgames&filter=withbody&todate=1514764799&pagesize=100&page=1&order=desc&sort=votes"
+    },
+    {
+      "file": "se-boardgames-2.json",
+      "sha256": "cc0733c70ae3823691a72db0057344d1b378288e373f20144d78808deab0d282",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=boardgames&filter=withbody&todate=1514764799&pagesize=100&page=2&order=desc&sort=votes"
+    },
+    {
+      "file": "se-boardgames-3.json",
+      "sha256": "b038456838b48dd9e4034d4e34224e0061a45cc20ce9f522c41f288881a2dbeb",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=boardgames&filter=withbody&todate=1514764799&pagesize=100&page=3&order=desc&sort=votes"
+    },
+    {
+      "file": "se-cooking-1.json",
+      "sha256": "fa4112e1292a1c612a098e0efea8b60456827f41fb2aa9121f36e235c518ab2b",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=cooking&filter=withbody&todate=1514764799&pagesize=100&page=1&order=desc&sort=votes"
+    },
+    {
+      "file": "se-cooking-2.json",
+      "sha256": "2e94787aa01a49537b8893b4290a6cb19a73def380cbf95d8ea708a628279a93",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=cooking&filter=withbody&todate=1514764799&pagesize=100&page=2&order=desc&sort=votes"
+    },
+    {
+      "file": "se-cooking-3.json",
+      "sha256": "f3475e0264875ce62a86b3ceb1452fc761db3cc0a0a4acce5637b2cde7c5e295",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=cooking&filter=withbody&todate=1514764799&pagesize=100&page=3&order=desc&sort=votes"
+    },
+    {
+      "file": "se-gardening-1.json",
+      "sha256": "f8221eff9b911936d2231dc9f2d78affa6275640abbf8593e2c3931e5528d66a",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=gardening&filter=withbody&todate=1514764799&pagesize=100&page=1&order=desc&sort=votes"
+    },
+    {
+      "file": "se-gardening-2.json",
+      "sha256": "d7a2a029e9d97b2129452b883db87cf2d4f31ea7cb3ea28da98d2d5e6ba6d914",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=gardening&filter=withbody&todate=1514764799&pagesize=100&page=2&order=desc&sort=votes"
+    },
+    {
+      "file": "se-gardening-3.json",
+      "sha256": "1d28bec09184ed78b72abf87b179fae7907b9a0cb48eafcaac5d61eb9e785b28",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=gardening&filter=withbody&todate=1514764799&pagesize=100&page=3&order=desc&sort=votes"
+    },
+    {
+      "file": "se-movies-1.json",
+      "sha256": "deca5ab52b6a73769fbb70374e0617170524cdee5b38527922dc30a8ce08ccb4",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=movies&filter=withbody&todate=1514764799&pagesize=100&page=1&order=desc&sort=votes"
+    },
+    {
+      "file": "se-movies-2.json",
+      "sha256": "e40d5532d7a0f8850eafdaf3e4d03be074a25d586b1aced77a4278acd6a81859",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=movies&filter=withbody&todate=1514764799&pagesize=100&page=2&order=desc&sort=votes"
+    },
+    {
+      "file": "se-movies-3.json",
+      "sha256": "bfaef6503911a46d497bf923d0864f603cf77943a9867dade48ba1aa4a5adf4f",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=movies&filter=withbody&todate=1514764799&pagesize=100&page=3&order=desc&sort=votes"
+    },
+    {
+      "file": "se-music-1.json",
+      "sha256": "db9e67ed2a4fa806c5b3884d03f789d8bf3cf1d99ac7fcff21ccf27cdb186b76",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=music&filter=withbody&todate=1514764799&pagesize=100&page=1&order=desc&sort=votes"
+    },
+    {
+      "file": "se-music-2.json",
+      "sha256": "85d1868213e1427685214b80b7d89e40c27d48ec02017123a7f58607054acc70",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=music&filter=withbody&todate=1514764799&pagesize=100&page=2&order=desc&sort=votes"
+    },
+    {
+      "file": "se-music-3.json",
+      "sha256": "1cd778df7a593e12e291f5bcd376da9e35f7d998d478c15a53b8e7f9e0af6874",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=music&filter=withbody&todate=1514764799&pagesize=100&page=3&order=desc&sort=votes"
+    },
+    {
+      "file": "se-outdoors-1.json",
+      "sha256": "f83553d9e476309914925225c6742c51af5e4f27d576121d2b8346c82e04b882",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=outdoors&filter=withbody&todate=1514764799&pagesize=100&page=1&order=desc&sort=votes"
+    },
+    {
+      "file": "se-outdoors-2.json",
+      "sha256": "fd595a37cc962d82c85fd9cb8eb2bee44781decea222bf841bfbb2371239a4e1",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=outdoors&filter=withbody&todate=1514764799&pagesize=100&page=2&order=desc&sort=votes"
+    },
+    {
+      "file": "se-outdoors-3.json",
+      "sha256": "8eabae5b6a50797683d854a0bdd9104a00c4800215a09caffe60da3569a8daf0",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=outdoors&filter=withbody&todate=1514764799&pagesize=100&page=3&order=desc&sort=votes"
+    },
+    {
+      "file": "se-parenting-1.json",
+      "sha256": "6bfead01f84a617cad0fd23598da5c1851355ccc83685cc0de35fe90d79dc603",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=parenting&filter=withbody&todate=1514764799&pagesize=100&page=1&order=desc&sort=votes"
+    },
+    {
+      "file": "se-parenting-2.json",
+      "sha256": "9a1abfa2f6f863ecee0922da54dc6b3e3cd4aeb554d9ae184a12681179a3e1a0",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=parenting&filter=withbody&todate=1514764799&pagesize=100&page=2&order=desc&sort=votes"
+    },
+    {
+      "file": "se-parenting-3.json",
+      "sha256": "137b016f414453b74586dcceab18c7e237d8c6800bc69a1825a007622a3777cc",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=parenting&filter=withbody&todate=1514764799&pagesize=100&page=3&order=desc&sort=votes"
+    },
+    {
+      "file": "se-pets-1.json",
+      "sha256": "3993af32f99c806ca70ef837f7bf2bc2db684b9e887c9704a8b1ffcdc2964df1",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=pets&filter=withbody&todate=1514764799&pagesize=100&page=1&order=desc&sort=votes"
+    },
+    {
+      "file": "se-pets-2.json",
+      "sha256": "3d9c7f3a7a256389538071e921ac32c342f088c2fc4f87d3d8e2288b2f298298",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=pets&filter=withbody&todate=1514764799&pagesize=100&page=2&order=desc&sort=votes"
+    },
+    {
+      "file": "se-pets-3.json",
+      "sha256": "1c20be91dc8f178492735b24f7aa1b38503b545239bdeb24126a8a7d1f0b0f5b",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=pets&filter=withbody&todate=1514764799&pagesize=100&page=3&order=desc&sort=votes"
+    },
+    {
+      "file": "se-sports-1.json",
+      "sha256": "d96586fc512a8cf2dbf4869162992f33e0988fe62f985b240b3cd194ca0ed46b",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=sports&filter=withbody&todate=1514764799&pagesize=100&page=1&order=desc&sort=votes"
+    },
+    {
+      "file": "se-sports-2.json",
+      "sha256": "84f9f55c5dc9f56527dce271143b05d95425a3480abc2e5c16f6bc541fd34de7",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=sports&filter=withbody&todate=1514764799&pagesize=100&page=2&order=desc&sort=votes"
+    },
+    {
+      "file": "se-sports-3.json",
+      "sha256": "9ebb2bd40f15a0477a1e2498177a8d40ebce61eff46b1fa1cb2d54fd8d44bbb4",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=sports&filter=withbody&todate=1514764799&pagesize=100&page=3&order=desc&sort=votes"
+    },
+    {
+      "file": "se-travel-1.json",
+      "sha256": "a9e2467390ffd5700b7fcf2ce4c2913a1b05c55f0bbd882e2c25e5b8390dc310",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=travel&filter=withbody&todate=1514764799&pagesize=100&page=1&order=desc&sort=votes"
+    },
+    {
+      "file": "se-travel-2.json",
+      "sha256": "269df6f28dda0c21e41704cd5325cf130286d49277683da9a9dbce2b409e9fb8",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=travel&filter=withbody&todate=1514764799&pagesize=100&page=2&order=desc&sort=votes"
+    },
+    {
+      "file": "se-travel-3.json",
+      "sha256": "f8d2e5d815e6b61b09ec205510c56d1b9979f480eb3600e68f88e57422616f9a",
+      "source_url": "https://api.stackexchange.com/2.3/answers?site=travel&filter=withbody&todate=1514764799&pagesize=100&page=3&order=desc&sort=votes"
+    },
+    {
+      "file": "tiny-prefix.txt",
+      "sha256": "be824a366367d58f115992415e6ea5b2cb54535d5c29fd2b01dcf760b8e03332",
+      "source_url": "https://huggingface.co/datasets/roneneldan/TinyStories/resolve/f54c09fd23315a6f9c86f9dc80f725de7d8f9c64/TinyStoriesV2-GPT4-train.txt"
+    },
+    {
+      "file": "ws-10115.json",
+      "sha256": "42f738579f394cb10622048d5b28d5959013a4737070aa55ae906d1adba9a073",
+      "source_url": "https://tr.wikisource.org/w/index.php?oldid=75105"
+    },
+    {
+      "file": "ws-7049.json",
+      "sha256": "8444b9728b77f5c3b5f08a0ba0bc29164274ca251efe2c3c31217a5d67bb8762",
+      "source_url": "https://tr.wikisource.org/w/index.php?oldid=116137"
+    },
+    {
+      "file": "ws-7206.json",
+      "sha256": "d06f71e8c5f374baf6835f7c5be599c1ba72f0515a00b388a40b04a80b487954",
+      "source_url": "https://tr.wikisource.org/w/index.php?oldid=116130"
+    },
+    {
+      "file": "ws-7375.json",
+      "sha256": "2fad2ab854cda4de40ae31f12ae09c075481322d1ef50fc9e95bbeb8d8223360",
+      "source_url": "https://tr.wikisource.org/w/index.php?oldid=116129"
+    },
+    {
+      "file": "ws-7382.json",
+      "sha256": "734ce606cb174ff3b0c234343a236543efa7c1e23508a88014e609e1cff3cd84",
+      "source_url": "https://tr.wikisource.org/w/index.php?oldid=116136"
+    },
+    {
+      "file": "ws-7491.json",
+      "sha256": "b2378e03aaa308a10f2e8304b27066d46d88f26c0c97048d8064c42d2fc27dfe",
+      "source_url": "https://tr.wikisource.org/w/index.php?oldid=116133"
+    },
+    {
+      "file": "ws-7550.json",
+      "sha256": "d9d47523ae45ea0da465056a56b867bf36a13aaa23dca38eee9028d9ba0e817a",
+      "source_url": "https://tr.wikisource.org/w/index.php?oldid=116131"
+    },
+    {
+      "file": "ws-8197.json",
+      "sha256": "ed3573c079dbe4fbc0cf7b4c86ef393bdbb8ab894002c6e52b1c045fb52520a6",
+      "source_url": "https://tr.wikisource.org/w/index.php?oldid=116132"
+    },
+    {
+      "file": "ws-9537.json",
+      "sha256": "dc6b5b1055679a27cbd1c5ce93ff6f6e88589fd3824ab66ff176be5656f7f9ad",
+      "source_url": "https://tr.wikisource.org/w/index.php?oldid=116138"
+    }
+  ],
+  "existing_archives": {
+    "kaynaklar/AI/cturan/turkish-synthetic-corpus/tr_corpus.jsonl": "61e6d21caa5180b0ac930e2368cc73069339b726ac9d94772454857d2b73df3f",
+    "kaynaklar/AI/Uunan/turkish-knowledge-sft/chatml_dataset.jsonl": "95e27dd45dfba11b91f467c901078054c5dc0dc95c38a6d64a7c99e4e48b5b3b",
+    "kaynaklar/gercek_yasam/raid_train_none.csv": "c5467bca6fc7f5c728c676450c7f84ce401df6c6ccc6d82c47e3b5f3c6d6fce4"
+  },
+  "tiny_prefix_bytes": 4194304,
+  "output_sha256": {
+    "v6_replacements.jsonl": "f34c6f70ba90726aff8e8ab267d4335f8d08c18aad3d1f8106b669e05cbd0bd1",
+    "detector_v6_control.jsonl": "edf6a3bacb47133b6ef57a562a79dd9ad211d668604076909727abc8386ddad8",
+    "general_v6_train.jsonl": "4c9b1464e0b40c45a102a7d66b63feef7f669821491489f69f0d687e3bc33304",
+    "general_v6_holdout.jsonl": "b903aed10fdee4822ed8caacf93d7544ab708c4b0e7c87430d0e202d0d14876c",
+    "detector_v6.jsonl": "e4801fc3632c949675589dbf2a59ea9ebf6f3cc1c0323fd7c83350508606ec06"
+  }
+}

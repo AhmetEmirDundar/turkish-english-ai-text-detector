@@ -1,0 +1,11 @@
+# V4 Türkçe teknik eğitim ek verisi
+
+`technical_education_v4_addition.jsonl` dosyasında 571 insan ve 571 AI metni bulunur. İnsan pasajları 66 kaynak dosyasından, AI metinleri 571 farklı sorudan gelir. Her iki sınıfın 50 sözcüklük uzunluk aralıklarındaki sayıları eşittir. Metinler 50–393 sözcük arasındadır, 52 tanesi en az 250 sözcüktür.
+
+**İnsan metinleri.** Fırat Özgül’ün belgeleri ve YazBel topluluğunun katkılarından oluşan Python kılavuzunun 13 Ekim 2021 sürümü kullanıldı. Etiketin dayanağı, yazar bilgisi ve arşiv tarihidir. Kaynak dosyalardan açıklayıcı paragraflar seçildi, bazı bitişik paragraflar birleştirildi, biçim işaretleri ve boşluklar düzenlendi. Bu pasajlar aynı CC BY-NC-SA 3.0 lisansıyla sunulur. [Kaynak sürümü](https://github.com/yazbel/python/tree/af8ec45b868e4e3a17b183389c3d4749fb040a0a) · [Yazar ve lisans bildirimi](https://github.com/yazbel/python/blob/af8ec45b868e4e3a17b183389c3d4749fb040a0a/LICENSE)
+
+**AI metinleri.** Uunan Turkish Knowledge SFT derlemesinde teknik kavramlarla ilgili Türkçe soruların ilk asistan yanıtı kullanıldı. AI etiketi kaynak sahibinin sentetik üretim beyanına dayanır. Sorular ve düşünme alanları dışarıda bırakıldı. Kaynak revizyonu ve JSONL bayt konumu her satırda saklanır. Bu kayıtların kaynak lisansı Apache 2.0’dır. [Kaynak sürümü](https://huggingface.co/datasets/Uunan/turkish-knowledge-sft/tree/ee6e20f207a9ef9cadc10b00072c6ef2a02f9817) · [Lisans metni](Apache-2.0.txt)
+
+**Seçim ve doğrulama.** Her iki sınıfta da boşluklar aynı şekilde düzenlendi. V3 derlemesi, V1 insan pasajları, yerel bağımsız 500 kayıt ve MAiDE-up arşivinin Türkçe/İngilizce yorumlarıyla normalleştirilmiş 18 ardışık sözcüğü paylaşan adaylar elendi. Aynı kontrol ek veri içinde de uygulandı. V3’teki bütün belge kimlikleri ve veri ayrımları korunur. Yeni kayıtların tamamı eğitim bölümündedir. Eski test kümesi uzun teknik ders özetlerindeki başarıyı doğrudan ölçmez.
+
+**Yeniden üretme.** Kaynak sürümünün ZIP arşivini `.training_cache/yazbel-af8ec45b868e4e3a17b183389c3d4749fb040a0a.zip` olarak kaydet. Projenin yerel Uunan, V3 ve karşılaştırma arşivleri hazırken `python build_education_data.py` çalıştır. Üretilen JSONL dosyasının SHA-256 değeri `2706af849cb43348dd9385d39fdc5ce177e10dce0829069c82f339f08ecd3c81`.

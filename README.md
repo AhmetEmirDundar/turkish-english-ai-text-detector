@@ -2,9 +2,11 @@
 
 ## GitHub kopyasını kullanma
 
-Depoda uygulama, eğitim kodu, model ayarları ve değerlendirme raporları bulunur. Yeni bir kopyada analiz çalıştırmak için Python ortamını kurup `requirements.txt` paketlerini yükle ve eğitimli V2 ağırlık dosyasını `models/detector_v2/xlmr/model.safetensors` yoluna yerleştir. V1 ve V3 için ilgili sürümün ağırlık dosyasını kendi `xlmr` klasörüne koy. Eğitimi tekrarlamak için ayrıca `data` klasöründeki kaynak notlarında açıklanan JSONL veri dosyaları gerekir. Ağırlıklar ve veri kümeleri yerel proje kopyasında tutulur.
+Depoda uygulama, eğitim kodu, model ayarları ve değerlendirme raporları bulunur. Yeni bir kopyada analiz çalıştırmak için Python ortamını kurup `requirements.txt` paketlerini yükle ve eğitimli V6 ağırlık dosyasını `models/detector_v6/xlmr/model.safetensors` yoluna yerleştir. Eğitimi tekrarlamak için ayrıca `data` klasöründeki kaynak notlarında açıklanan JSONL veri dosyaları gerekir. Büyük model ağırlıkları ve veri kümeleri yerel proje kopyasında tutulur.
 
 ## Web arayüzü
+
+Arayüz ve komut satırı V6 modelini kullanır. Eski sürümlere ait değerlendirme raporları karşılaştırma amacıyla tutulur.
 
 Proje klasöründe PowerShell açıp yerel sunucuyu başlat:
 
@@ -16,7 +18,7 @@ Tarayıcıda [Metin Dedektörü](http://127.0.0.1:8765) adresini aç. En az 50 s
 
 Excel’de görünür çalışma sayfalarındaki metin hücreleri satır satır okunur. PowerPoint’te başlıklar, metin kutuları ve tablolar slayt sırasıyla okunur. Taranmış PDF’lere önce OCR ile metin tanıma uygula.
 
-Yüklenen metni kontrol edip **Metni analiz et** düğmesine bas. İlk analizde v2 modeli belleğe yüklenir. Sonuçtaki AI skoru 0–100 ölçeğindedir. Sunucuyu durdurmak için terminalde Ctrl+C kullan. Port doluysa `app.py --port 8766` ile başka bir port seçebilirsin.
+Yüklenen metni kontrol edip **Metni analiz et** düğmesine bas. İlk analizde V6 modeli belleğe yüklenir. Model bilgisi penceresi çalışan sürümün üslup ağırlığını ve değerlendirme sonuçlarını gösterir. Sonuçtaki AI skoru 0–100 ölçeğindedir. Sunucuyu durdurmak için terminalde Ctrl+C kullan. Port doluysa `app.py --port 8766` ile başka bir port seçebilirsin.
 
 ## Metin analizi
 
@@ -26,7 +28,7 @@ Proje klasöründe PowerShell aç. `--file` ile arayüzde desteklenen dosya biç
 .\.venv\Scripts\python.exe .\detector.py --file .\metin.txt
 ```
 
-Hazır model `models/detector_v2` klasöründen yüklenir. İnternet bağlantısı gerekmez. Aynı komutta `--file` yerine `--text "…"` ile metni doğrudan verebilirsin. En az 50 sözcük gerekir. Analiz metnin tamamını sırayla, çakışmayan 50 sözcüklük parçalara böler. Örneğin 251 sözcükte beş tam parça ve bir sözcüklük son parça değerlendirilir. Bir parçanın modele sığmayan bölümü de ayrı bir geçişte incelenir. Parça sonuçları sözcük sayısına göre ağırlıklandırılır ve birleşik skora kalibrasyon uygulanır.
+Hazır model `models/detector_v6` klasöründen yüklenir. İnternet bağlantısı gerekmez. Aynı komutta `--file` yerine `--text "…"` ile metni doğrudan verebilirsin. En az 50 sözcük gerekir. Analiz metnin tamamını sırayla, çakışmayan 50 sözcüklük parçalara böler. Örneğin 251 sözcükte beş tam parça ve bir sözcüklük son parça değerlendirilir. Bir parçanın modele sığmayan bölümü de ayrı bir geçişte incelenir. Parça sonuçları sözcük sayısına göre ağırlıklandırılır ve birleşik skora kalibrasyon uygulanır.
 
 `word_count` incelenen sözcük sayısını, `windows` sözcük parçalarının sayısını verir. `ai_score` model skorudur. `threshold` karar eşiğini, `label` bu eşiğe göre seçilen sınıfı gösterir. Kaydedilmiş başarı ölçümleri modelin eğitildiği dönemdeki örnekleme yöntemine aittir. Eski sürümü aynı metinle karşılaştırmak için komuta `--model-dir .\models\detector_v1` ekle.
 
@@ -41,13 +43,37 @@ metin = Path("metin.txt").read_text(encoding="utf-8-sig")
 print(model.predict(metin))
 ```
 
+### Destekleyici üslup analizi
+
+Web arayüzü, komut satırı ve API aynı 0–100 ölçeğinde tek skor ve aynı model sürümünün sabit karar eşiğini kullanır (API'de ölçek 0–1). Üslup skoru üretilebildiğinde birleşik skor `(1 − w) × ana skor + w × üslup skoru` formülüyle hesaplanır. Bu ağırlık seçilen sürümde her metin için aynıdır. 50 alfabetik sözcük yoksa, üslup modeli veya kalibre edilmiş ağırlık eksikse ana skor kullanılır.
+
+Eğitim sonunda her sürüm için `w` yalnızca kayıtlı doğrulama ayrımından belirlenir. Türkçe/İngilizce ve insan/AI gruplarından kimliğe göre sıralanmış eşit sayıda kayıt alınır (grup başına en fazla 256). İki model belgelerin tamamını puanlar. Ortalama karesel hatayı en aza indiren ağırlık 0–0,5 aralığında seçilir ve `detector.json` içine kaydedilir. Eğitimli bir sürüm için bu adımı yerel veri dosyalarıyla yeniden çalıştırabilirsin: `python calibrate_fusion.py --model-dir models/detector_v2`.
+
+Yalnızca üslup modelini yeniden eğitmek için yerel eğitim verileriyle `train_detector.py --dataset v2 --style-only --output .\models\uslup_tekrar` çalıştır. Boş çıktı klasörüne `style.json`, ölçüm raporu ve kullanılan veri ayrımları yazılır.
+
 ## Eğitim ve ölçüm
+
+### V6 genel yazı verisi
+
+50.000 kayıtlık İngilizce değişiklik deneyi ve 54.000 kayıtlık genel yazı adayı ayrı ayrı eğitilir. V6, kitaplar, haberler, gündelik topluluk yanıtları ve kaynağı belirtilmiş sentetik anlatılar içerir. [Veri dosyaları, kaynaklar ve yeniden üretme](data/GENEL_METINLER_V6_KAYNAKLAR.md)
+
+Eğitimli V6’yı `python app.py --model-version v6 --port 8767` ile deneyebilirsin. [Üç sürümün karşılaştırması](models/detector_v6/MODEL_KARTI.md)
+
+### V5 eğitim verisi
+
+V5 toplam 50.000 benzersiz metin içerir. Eğitimde 37.763, doğrulamada 6.118, testte 6.119 kayıt kullanılır. Eğitim komutu `python train_detector.py --dataset v5 --output models/detector_v5` boş bir çıktı klasörü gerektirir. [V5 kaynakları ve sınıf dağılımı](data/DENGELI_V5_KAYNAKLAR.md)
+
+Eğitimli V5’i `python app.py --model-version v5 --port 8766` ile açabilirsin. Bağımsız otel testinde V5 daha başarılı oldu. İkinci bağımsız testte insan metinlerini daha sık AI olarak işaretlediği için bu sürümün değerlendirmesi sırasında V2 tercih edilmişti. [V5 model kartı ve iki testin sonuçları](models/detector_v5/MODEL_KARTI.md)
+
+### V4 eğitim verisi
+
+V3’ün 40.781 kaydına Türkçe programlama belgelerinden ve sentetik teknik soru yanıtlarından 1.142 eğitim kaydı eklendi. Toplam 41.923 kaydın 29.686’sı eğitim, 6.118’i doğrulama ve 6.119’u test içindir. Bu veriyle aday model eğitmek için boş bir çıktı klasörüyle `python train_detector.py --dataset v4 --output models/detector_v4` kullan. [Kaynaklar, lisanslar ve seçim yöntemi](data/TEKNIK_EGITIM_V4_KAYNAKLAR.md)
 
 ### Genişletilmiş veri seti ve V3
 
 [V3 veri seti](data/detector_v3_40781.jsonl) toplam 40.781 Türkçe ve İngilizce kayıt içerir. [15.781 yeni örnek ve kaynakları](data/GERCEK_YASAM_V3_KAYNAKLAR.md) arasında ürün ve film yorumları, tarifler, forum ve anlatı metinleri vardır. [V3 model kartında](models/detector_v3/MODEL_KARTI.md) V2 ile aynı metinler üzerinde yapılan karşılaştırma yer alır.
 
-V3, bağımsız otel yorumlarında daha fazla AI metni yakaladı ancak insan yorumlarını daha sık yanlış işaretledi. Genel kullanımda varsayılan sürüm V2’dir. V3’ü denemek için aşağıdaki komutlardan birini kullan:
+V3, bağımsız otel yorumlarında daha fazla AI metni yakaladı ancak insan yorumlarını daha sık yanlış işaretledi. O değerlendirmede V2 tercih edilmişti. V3’ü denemek için aşağıdaki komutlardan birini kullan:
 
 ```powershell
 .\.venv\Scripts\python.exe .\detector.py --model-dir .\models\detector_v3 --file .\metin.txt

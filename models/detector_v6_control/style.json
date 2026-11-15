@@ -1,0 +1,31 @@
+{
+  "features": [
+    "mean_word_length",
+    "word_length_sd",
+    "long_word_share",
+    "mean_sentence_length",
+    "sentence_length_cv",
+    "repeated_opening_share",
+    "local_vocabulary_diversity",
+    "repeated_bigram_share",
+    "commas_per_word",
+    "other_punctuation_per_word",
+    "questions_per_word"
+  ],
+  "weights": [
+    0.2717220901906223,
+    0.029676093025652155,
+    -1.6408382335929648,
+    -0.01432483329304968,
+    -0.3943406069857794,
+    3.5196272127027757,
+    6.793458341451691,
+    10.780066634335899,
+    13.918432932120234,
+    4.9600544679722125,
+    10.12100370153189
+  ],
+  "intercept": -8.776867044089478,
+  "threshold": 0.7395970744311786,
+  "human_threshold": 0.16124313486479255
+}

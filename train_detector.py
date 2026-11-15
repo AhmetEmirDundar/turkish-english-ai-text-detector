@@ -15,9 +15,12 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, precision_score, recall_score
 from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, get_linear_schedule_with_warmup
 
 from detector import MAX_TOKENS, ROOT, WINDOW_WORDS, probability
+from calibrate_fusion import calibrate_fusion
+from style_analysis import FEATURES, style_features, style_label
 
 SEED = 42
 BASE_ID = "FacebookAI/xlm-roberta-base"
@@ -25,6 +28,8 @@ REVISION = "e73636d4f797dec63c3081bb6ed5c7b0bb3f2089"
 FILES = ["ai_texts_tr_en_10000.jsonl", "human_texts_tr_en_10000.jsonl"]
 ENGLISH_ADDITION = "human_texts_en_nonacademic_10000.jsonl"
 REALWORLD_ADDITION = "realworld_v3_addition.jsonl"
+EDUCATION_ADDITION = "technical_education_v4_addition.jsonl"
+BALANCED_ADDITION = "balanced_v5_addition.jsonl"
 V1_MODEL = ROOT / "models" / "detector_v1"
 V2_MODEL = ROOT / "models" / "detector_v2"
 
@@ -96,17 +101,36 @@ def prepare(output, version):
     rows, hashes = [], {}
     legacy_test = []
     prior = {}
-    if version in ("v2","v3"):
+    if version in ("v6_control", "v6"):
+        filename = f"detector_{version}.jsonl"
+        data = (ROOT / "data" / filename).read_bytes()
+        hashes[filename] = hashlib.sha256(data).hexdigest()
+        rows = list(map(json.loads, data.splitlines()))
+        if len(rows) != len({r["id"] for r in rows}):
+            raise ValueError("Duplicate candidate record")
+        with (ROOT / "models/detector_v5/splits.jsonl").open(encoding="utf-8") as f:
+            frozen = {r["id"]:(r["split"],r["split_group"]) for r in map(json.loads,f) if r["split"] != "train"}
+        if {r["id"]:(r["split"],r["split_group"]) for r in rows if r["split"] != "train"} != frozen:
+            raise ValueError("Candidate evaluation split differs from V5")
+        for row in rows:
+            row["pieces"] = training_windows(row["text"])
+        return save_splits(output, rows, hashes, legacy_test)
+    if version != "v1":
         with (V1_MODEL / "splits.jsonl").open(encoding="utf-8") as f:
             prior = {r["id"]: r for r in map(json.loads, f)}
-    v2_splits = {}
+    parent_splits = {}
     filenames = list(FILES)
-    if version in ("v2","v3"):
+    if version != "v1":
         filenames.append(ENGLISH_ADDITION)
-    if version == "v3":
-        with (V2_MODEL / "splits.jsonl").open(encoding="utf-8") as f:
-            v2_splits = {r["id"]:r for r in map(json.loads, f)}
+    if version in ("v3", "v4", "v5"):
+        parent = V2_MODEL if version == "v3" else ROOT / "models/detector_v3"
+        with (parent / "splits.jsonl").open(encoding="utf-8") as f:
+            parent_splits = {r["id"]:r for r in map(json.loads, f)}
         filenames.append(REALWORLD_ADDITION)
+    if version in ("v4", "v5"):
+        filenames.append(EDUCATION_ADDITION)
+    if version == "v5":
+        filenames.append(BALANCED_ADDITION)
     for filename in filenames:
         path = ROOT / "data" / filename
         data = path.read_bytes()
@@ -114,7 +138,7 @@ def prepare(output, version):
         for line in data.splitlines():
             row = json.loads(line)
             row["pieces"] = training_windows(row["text"])
-            if version in ("v2","v3") and filename in FILES:
+            if version != "v1" and filename in FILES:
                 prev = prior[row["id"]]
                 assert (row["language"],row["label"]) == (prev["language"],prev["label"])
                 row.update(split=prev["split"], split_group=prev["split_group"])
@@ -122,14 +146,24 @@ def prepare(output, version):
                     legacy_test.append(row)
                 if row["language"] == "en" and row["label"] == 0:
                     continue
-            if version == "v3" and filename != REALWORLD_ADDITION:
-                frozen = v2_splits[row["id"]]
+            if filename in (EDUCATION_ADDITION, BALANCED_ADDITION):
+                row.update(split="train", split_group=row["group_id"])
+            elif version in ("v4", "v5") or (version == "v3" and filename != REALWORLD_ADDITION):
+                frozen = parent_splits[row["id"]]
                 assert (frozen["language"],frozen["label"]) == (row["language"],row["label"])
                 row.update(split=frozen["split"], split_group=frozen["split_group"])
             rows.append(row)
     if len({r["id"] for r in rows}) != len(rows):
         raise ValueError("Duplicate record ID")
+    if version == "v5":
+        counts = Counter((r["language"], r["label"]) for r in rows)
+        if counts != {(lang, label): 12500 for lang in ("tr", "en") for label in (0, 1)}:
+            raise ValueError(f"V5 sınıf sayıları beklenenden farklı: {counts}")
     split_records([r for r in rows if "split" not in r], stratify_genre=version == "v3")
+    return save_splits(output, rows, hashes, legacy_test)
+
+
+def save_splits(output, rows, hashes, legacy_test):
     splits = {s: [r for r in rows if r["split"] == s] for s in ("train", "validation", "test")}
     with (output / "splits.jsonl").open("w", encoding="utf-8") as f:
         for row in rows:
@@ -187,6 +221,56 @@ def calibrate(rows, logits):
     threshold = max(thresholds, key=lambda t: f1_score(labels, scores >= t, average="macro"))
     settings["threshold"] = float(threshold)
     return settings
+
+
+def train_style(splits, version, output):
+    features, covered = {}, {}
+    for split, rows in splits.items():
+        covered[split], values = [], []
+        for row in rows:
+            vector = style_features(row["text"])
+            if vector is not None:
+                covered[split].append(row)
+                values.append(vector)
+        features[split] = np.array(values)
+    weights = training_weights(covered["train"], version)
+    scaler = StandardScaler().fit(features["train"], sample_weight=weights)
+    classifier = LogisticRegression(max_iter=400, random_state=SEED)
+    classifier.fit(scaler.transform(features["train"]), [r["label"] for r in covered["train"]],
+                   sample_weight=weights)
+    # Fold standardization and validation calibration into one linear function.
+    coef = classifier.coef_[0] / scaler.scale_
+    bias = classifier.intercept_[0] - np.dot(scaler.mean_, coef)
+    logits = {s: features[s] @ coef + bias for s in ("validation", "test")}
+    calibration = calibrate(covered["validation"], logits["validation"])
+    validation_scores = [probability(v, calibration) for v in logits["validation"]]
+    # Mirror the AI threshold's per-language error constraint for human calls.
+    human_limit = min(0.5, calibration["threshold"])
+    for lang in ("tr", "en"):
+        ai = sorted(score for r, score in zip(covered["validation"], validation_scores)
+                    if r["language"] == lang and r["label"] == 1)
+        human_limit = min(human_limit, ai[int(.05 * len(ai))])
+    settings = {
+        "features": FEATURES, "weights": (coef * calibration["slope"]).tolist(),
+        "intercept": bias * calibration["slope"] + calibration["intercept"],
+        "threshold": calibration["threshold"],
+        "human_threshold": float(np.nextafter(human_limit, -np.inf)),
+    }
+    write_json(output / "style.json", settings)
+    report = {}
+    for split in logits:
+        labels = [style_label(probability(v, calibration), settings) for v in logits[split]]
+        report[split] = {}
+        for lang in ("overall", "tr", "en"):
+            pairs = [(label, row["label"]) for row, label in zip(covered[split], labels)
+                     if lang == "overall" or lang == row["language"]]
+            report[split][lang] = {
+                name: {"actual_ai": sum(label == name and actual == 1 for label, actual in pairs),
+                       "actual_human": sum(label == name and actual == 0 for label, actual in pairs)}
+                for name in ("AI", "İnsan", "Belirsiz")}
+    report["excluded"] = {s: len(rows) - len(covered[s]) for s, rows in splits.items()}
+    write_json(output / "style_metrics.json", report)
+    print("Style test", report["test"]["overall"], flush=True)
 
 
 def flatten(rows):
@@ -310,11 +394,12 @@ def train_transformer(splits, base, out, args, device, weights):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--dataset", choices=["v1","v2","v3"], default="v3")
+    parser.add_argument("--dataset", choices=["v1","v2","v3","v4","v5","v6_control","v6"], default="v3")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--base-dir", type=Path, default=ROOT / ".training_cache" / "xlm-roberta-base")
     parser.add_argument("--epochs", type=int, default=2)
     parser.add_argument("--batch-size", type=int, default=24)
+    parser.add_argument("--style-only", action="store_true", help="Train only the writing-style classifier")
     args = parser.parse_args()
     if args.output is None:
         args.output = ROOT / "models" / f"detector_{args.dataset}"
@@ -330,6 +415,9 @@ def main():
     torch.set_num_threads(4)
     print("Device", torch.cuda.get_device_name(device) if device.type == "cuda" else device, flush=True)
     splits, counts, hashes, legacy_test = prepare(args.output, args.dataset)
+    train_style(splits, args.dataset, args.output)
+    if args.style_only:
+        return
     weights = training_weights(splits["train"], args.dataset)
     val = splits["validation"]
     settings_b, val_b, predict_b = baseline(splits["train"], val, args.output, weights)
@@ -370,6 +458,8 @@ def main():
     write_json(args.output / "metrics.json", report)
     write_json(args.output / "detector.json", {"model": winner, **candidates[winner][0]})
     print("Selected", winner, "test", report["models"][winner]["test"], flush=True)
+    del candidates, predict, predict_x
+    calibrate_fusion(args.output)
 
 
 if __name__ == "__main__":

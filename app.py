@@ -8,10 +8,11 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from detector import DEFAULT_MODEL, Detector, WINDOW_WORDS, windows
+from detector import ROOT, Detector, WINDOW_WORDS, windows
 from document_text import DOCUMENT_EXTENSIONS, MAX_DOCUMENT_BYTES, extract_document
 
 WEB = Path(__file__).resolve().parent / "web"
+DEFAULT_WEB_MODEL = ROOT / "models" / "detector_v6"
 ASSETS = {"/": ("index.html", "text/html"), "/app.css": ("app.css", "text/css"),
           "/app.js": ("app.js", "text/javascript")}
 MAX_CHARS = 100_000
@@ -27,7 +28,7 @@ class LocalServer(ThreadingHTTPServer):
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
         super().server_bind()
 
-    def __init__(self, port, model_dir=DEFAULT_MODEL):
+    def __init__(self, port, model_dir=DEFAULT_WEB_MODEL):
         super().__init__(("127.0.0.1", port), Handler)
         self.model_dir = model_dir
         self.lock = threading.Lock()
@@ -70,6 +71,7 @@ class Handler(BaseHTTPRequestHandler):
                 return self.json(503, {"error": "Model ayarları okunamadı."})
             return self.json(200, {"name": "XLM-RoBERTa" if settings["model"] == "xlmr" else "TF-IDF",
                                    "version": self.server.model_dir.name.split("_")[-1], "threshold": settings["threshold"],
+                                   "style_weight": settings.get("style_weight", 0) if (self.server.model_dir / "style.json").is_file() else 0,
                                    "min_words": WINDOW_WORDS, "max_chars": MAX_CHARS,
                                    "document_extensions": sorted(DOCUMENT_EXTENSIONS)})
         if path not in ASSETS:
@@ -126,10 +128,10 @@ class Handler(BaseHTTPRequestHandler):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Metin Dedektörü yerel arayüzü")
     parser.add_argument("--port", type=int, default=8765)
-    parser.add_argument("--model-version", choices=("v2","v3"), default=DEFAULT_MODEL.name.split("_")[-1])
+    parser.add_argument("--model-version", choices=("v6",), default="v6")
     args = parser.parse_args()
     try:
-        server = LocalServer(args.port, DEFAULT_MODEL.parent / ("detector_" + args.model_version))
+        server = LocalServer(args.port, DEFAULT_WEB_MODEL.parent / ("detector_" + args.model_version))
     except OSError as exc:
         parser.exit(1, f"Sunucu başlatılamadı ({exc}). --port ile başka bir port seçebilirsiniz.\n")
     with server:

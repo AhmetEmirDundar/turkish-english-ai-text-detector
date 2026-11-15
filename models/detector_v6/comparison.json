@@ -1,0 +1,239 @@
+{
+  "hotel_archive_sha256": "ba7e6c05f81fe4c7d05cefb4b6ab8650a80020b4986156c14a9ed1aad0f81d5e",
+  "excluded_overlap": {
+    "verified_human": 0,
+    "general": 0,
+    "second_external": 0,
+    "hotel": 0
+  },
+  "models": {
+    "v5": {
+      "verified_human": {
+        "overall": {
+          "human": 153,
+          "false_ai": 62,
+          "missed_ai": 0
+        },
+        "en": {
+          "human": 153,
+          "false_ai": 62,
+          "missed_ai": 0
+        }
+      },
+      "general": {
+        "overall": {
+          "human": 200,
+          "false_ai": 94,
+          "missed_ai": 9,
+          "ai": 200
+        },
+        "tr": {
+          "human": 100,
+          "false_ai": 74,
+          "missed_ai": 6,
+          "ai": 100
+        },
+        "en": {
+          "human": 100,
+          "false_ai": 20,
+          "missed_ai": 3,
+          "ai": 100
+        }
+      },
+      "second_external": {
+        "overall": {
+          "human": 250,
+          "false_ai": 124,
+          "missed_ai": 10,
+          "ai": 250
+        },
+        "tr": {
+          "human": 125,
+          "false_ai": 10,
+          "missed_ai": 10,
+          "ai": 125
+        },
+        "en": {
+          "human": 125,
+          "false_ai": 114,
+          "missed_ai": 0,
+          "ai": 125
+        }
+      },
+      "hotel": {
+        "overall": {
+          "human": 250,
+          "false_ai": 43,
+          "missed_ai": 5,
+          "ai": 250
+        },
+        "tr": {
+          "human": 125,
+          "false_ai": 26,
+          "missed_ai": 2,
+          "ai": 125
+        },
+        "en": {
+          "human": 125,
+          "false_ai": 17,
+          "missed_ai": 3,
+          "ai": 125
+        }
+      }
+    },
+    "v6_control": {
+      "verified_human": {
+        "overall": {
+          "human": 153,
+          "false_ai": 29,
+          "missed_ai": 0
+        },
+        "en": {
+          "human": 153,
+          "false_ai": 29,
+          "missed_ai": 0
+        }
+      },
+      "general": {
+        "overall": {
+          "human": 200,
+          "false_ai": 91,
+          "missed_ai": 8,
+          "ai": 200
+        },
+        "tr": {
+          "human": 100,
+          "false_ai": 76,
+          "missed_ai": 5,
+          "ai": 100
+        },
+        "en": {
+          "human": 100,
+          "false_ai": 15,
+          "missed_ai": 3,
+          "ai": 100
+        }
+      },
+      "second_external": {
+        "overall": {
+          "human": 250,
+          "false_ai": 82,
+          "missed_ai": 7,
+          "ai": 250
+        },
+        "tr": {
+          "human": 125,
+          "false_ai": 9,
+          "missed_ai": 7,
+          "ai": 125
+        },
+        "en": {
+          "human": 125,
+          "false_ai": 73,
+          "missed_ai": 0,
+          "ai": 125
+        }
+      },
+      "hotel": {
+        "overall": {
+          "human": 250,
+          "false_ai": 30,
+          "missed_ai": 32,
+          "ai": 250
+        },
+        "tr": {
+          "human": 125,
+          "false_ai": 23,
+          "missed_ai": 2,
+          "ai": 125
+        },
+        "en": {
+          "human": 125,
+          "false_ai": 7,
+          "missed_ai": 30,
+          "ai": 125
+        }
+      }
+    },
+    "v6": {
+      "verified_human": {
+        "overall": {
+          "human": 153,
+          "false_ai": 28,
+          "missed_ai": 0
+        },
+        "en": {
+          "human": 153,
+          "false_ai": 28,
+          "missed_ai": 0
+        }
+      },
+      "general": {
+        "overall": {
+          "human": 200,
+          "false_ai": 6,
+          "missed_ai": 2,
+          "ai": 200
+        },
+        "tr": {
+          "human": 100,
+          "false_ai": 1,
+          "missed_ai": 0,
+          "ai": 100
+        },
+        "en": {
+          "human": 100,
+          "false_ai": 5,
+          "missed_ai": 2,
+          "ai": 100
+        }
+      },
+      "second_external": {
+        "overall": {
+          "human": 250,
+          "false_ai": 84,
+          "missed_ai": 6,
+          "ai": 250
+        },
+        "tr": {
+          "human": 125,
+          "false_ai": 9,
+          "missed_ai": 6,
+          "ai": 125
+        },
+        "en": {
+          "human": 125,
+          "false_ai": 75,
+          "missed_ai": 0,
+          "ai": 125
+        }
+      },
+      "hotel": {
+        "overall": {
+          "human": 250,
+          "false_ai": 36,
+          "missed_ai": 16,
+          "ai": 250
+        },
+        "tr": {
+          "human": 125,
+          "false_ai": 21,
+          "missed_ai": 3,
+          "ai": 125
+        },
+        "en": {
+          "human": 125,
+          "false_ai": 15,
+          "missed_ai": 13,
+          "ai": 125
+        }
+      }
+    }
+  },
+  "sample_sha256": {
+    "verified_human": "2cf9718f69708f0b42b9f1f510679da1bb8fbc936268a11989b906431f667cf6",
+    "general": "34312f78b983fd9cdff3cc356b2bf02e393f61250c15d50c9aee715e3f550dcc",
+    "second_external": "fa124a92d466a5c59e565befc72ec71478a17b6b1944ae10fd331ed141838ce6",
+    "hotel": "7d7272cf0c8f89d389d72a4e175d45bcfbd4b9753cc05adac9223a72f7b44d60"
+  }
+}
