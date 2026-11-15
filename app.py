@@ -1,6 +1,8 @@
 """Türkçe ve İngilizce metinler için yerel analiz arayüzü."""
 import argparse
 import json
+import math
+import re
 import socket
 import threading
 import traceback
@@ -8,14 +10,16 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from detector import ROOT, Detector, WINDOW_WORDS, windows
+from detector import ROOT, WINDOW_WORDS, windows
 from document_text import DOCUMENT_EXTENSIONS, MAX_DOCUMENT_BYTES, extract_document
+from gradio_client import Client
 
 WEB = Path(__file__).resolve().parent / "web"
 DEFAULT_WEB_MODEL = ROOT / "models" / "detector_v6"
 ASSETS = {"/": ("index.html", "text/html"), "/app.css": ("app.css", "text/css"),
           "/app.js": ("app.js", "text/javascript")}
 MAX_CHARS = 100_000
+HF_SPACE_ID = "AhmetEmirDundar/ai-text-detector"
 EXTRACT_ROUTES = {"/api/extract/" + ext[1:]: ext for ext in DOCUMENT_EXTENSIONS}
 
 
@@ -32,13 +36,27 @@ class LocalServer(ThreadingHTTPServer):
         super().__init__(("127.0.0.1", port), Handler)
         self.model_dir = model_dir
         self.lock = threading.Lock()
-        self.model = None
+        self.client = None
 
     def predict(self, text):
         with self.lock:
-            if self.model is None:
-                self.model = Detector(self.model_dir)
-            return self.model.predict(text)
+            if self.client is None:
+                self.client = Client(HF_SPACE_ID, verbose=False)
+            output = self.client.predict(text, api_name="/analyze")
+
+        if not isinstance(output, (list, tuple)) or len(output) < 3:
+            raise RuntimeError("Hugging Face Space beklenmeyen bir yanıt döndürdü.")
+        score_text, label, details = (str(value) for value in output[:3])
+        score_match = re.search(r"([\d.,]+)\s*/\s*100", score_text)
+        threshold_match = re.search(r"karar eşiği\s+([\d.,]+)", details, re.IGNORECASE)
+        if not score_match or not threshold_match:
+            raise RuntimeError("Hugging Face Space yanıtı okunamadı.")
+
+        score = float(score_match.group(1).replace(",", ".")) / 100
+        threshold = float(threshold_match.group(1).replace(",", ".")) / 100
+        word_count = len(text.split())
+        return {"label": label, "ai_score": round(score, 6), "threshold": threshold,
+                "word_count": word_count, "windows": math.ceil(word_count / WINDOW_WORDS)}
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -121,7 +139,7 @@ class Handler(BaseHTTPRequestHandler):
             result = self.server.predict(text)
         except Exception:
             traceback.print_exc()
-            return self.json(503, {"error": "Model çalıştırılamadı. Proje ortamını ve yerel model dosyalarını kontrol edin."})
+            return self.json(503, {"error": "Hugging Face analiz servisine ulaşılamadı. Space'in çalıştığını ve internet bağlantısını kontrol edin."})
         self.json(200, result)
 
 

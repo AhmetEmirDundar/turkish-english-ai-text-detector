@@ -6,11 +6,12 @@ Depoda uygulama, eğitim kodu, model ayarları ve değerlendirme raporları bulu
 
 ## Web arayüzü
 
-Arayüz ve komut satırı V6 modelini kullanır. Eski sürümlere ait değerlendirme raporları karşılaştırma amacıyla tutulur.
+Arayüz, analizleri [Hugging Face Space](https://huggingface.co/spaces/AhmetEmirDundar/ai-text-detector) üzerindeki V6 modeline gönderir. İnternet bağlantısı gerekir; ilk istekte Space uykudan uyanıyorsa yanıt gecikebilir. Girilen metin analiz edilmek üzere Hugging Face'e iletilir. Komut satırı ise yerel V6 modelini kullanır. Eski sürümlere ait değerlendirme raporları karşılaştırma amacıyla tutulur.
 
 Proje klasöründe PowerShell açıp yerel sunucuyu başlat:
 
 ```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
 .\.venv\Scripts\python.exe .\app.py
 ```
 
@@ -18,7 +19,7 @@ Tarayıcıda [Metin Dedektörü](http://127.0.0.1:8765) adresini aç. En az 50 s
 
 Excel’de görünür çalışma sayfalarındaki metin hücreleri satır satır okunur. PowerPoint’te başlıklar, metin kutuları ve tablolar slayt sırasıyla okunur. Taranmış PDF’lere önce OCR ile metin tanıma uygula.
 
-Yüklenen metni kontrol edip **Metni analiz et** düğmesine bas. İlk analizde V6 modeli belleğe yüklenir. Model bilgisi penceresi çalışan sürümün üslup ağırlığını ve değerlendirme sonuçlarını gösterir. Sonuçtaki AI skoru 0–100 ölçeğindedir. Sunucuyu durdurmak için terminalde Ctrl+C kullan. Port doluysa `app.py --port 8766` ile başka bir port seçebilirsin.
+Yüklenen metni kontrol edip **Metni analiz et** düğmesine bas. İlk istek Hugging Face Space'i uyandırabilir ve bekletebilir. Sonuçtaki AI skoru 0–100 ölçeğindedir. Sunucuyu durdurmak için terminalde Ctrl+C kullan. Port doluysa `app.py --port 8766` ile başka bir port seçebilirsin.
 
 ## Metin analizi
 
