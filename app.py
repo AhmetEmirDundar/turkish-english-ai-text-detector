@@ -115,11 +115,6 @@ def page_language_script():
     return FileResponse(WEB / "page-language.js", media_type="text/javascript")
 
 
-@app.get("/ads.txt")
-def ads_txt():
-    return FileResponse(WEB / "ads.txt", media_type="text/plain")
-
-
 @app.get("/robots.txt")
 def robots_txt():
     return FileResponse(WEB / "robots.txt", media_type="text/plain")
